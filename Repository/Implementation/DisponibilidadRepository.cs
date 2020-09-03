@@ -73,6 +73,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 if(disponibilidad!= null){
                     listarHorasDisponibles.setList(disponibilidad.HoraInicio, disponibilidad.HoraFin,
                     disponibilidad.HorariosDescartados.ToList());
+
                 }
                 else {
                     listarHorasDisponibles.setList(new DateTime(fechaConvertida.Year,
@@ -80,6 +81,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     new DateTime(fechaConvertida.Year,
                     fechaConvertida.Month, fechaConvertida.Day, 19, 0, 0),
                     null);
+
+                }
+                if (listarHorasDisponibles.hours.Count == 0){
+                    return null;
                 }
             }catch(System.Exception){
                 throw;

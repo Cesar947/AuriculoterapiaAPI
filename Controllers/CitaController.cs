@@ -20,9 +20,9 @@ namespace Auriculoterapia.Api.Controllers
         }
 
         [HttpPost("especialista")]
-        public ActionResult RegistrarCitaEspecialista([FromBody] FormularioCita entity, [FromQuery] int PacienteId){
+        public FormularioCita RegistrarCitaEspecialista([FromBody] FormularioCita entity, [FromQuery] int PacienteId){
             CitaService.RegistrarCita(entity, PacienteId);
-            return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status201Created);
+            return entity;
         
         }
 
@@ -33,10 +33,10 @@ namespace Auriculoterapia.Api.Controllers
         }
 
         [HttpPost("paciente")]
-        public ActionResult RegistrarCitaPaciente([FromBody] FormularioCitaPaciente entity, [FromQuery] int PacienteId){
+        public FormularioCitaPaciente RegistrarCitaPaciente([FromBody] FormularioCitaPaciente entity, [FromQuery] int PacienteId){
             CitaService.RegistrarCitaPaciente(entity, PacienteId);
             Console.WriteLine(StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status201Created));
-            return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status201Created);
+             return entity;
         }
 
         [HttpGet]
