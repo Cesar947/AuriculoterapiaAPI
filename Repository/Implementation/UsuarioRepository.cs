@@ -157,16 +157,31 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var especialista = context.Especialistas.FirstOrDefault(x => x.UsuarioId == userId);
 
             ResponseUsuarioById responseUsuario;
+
             
-            if(rol.Rol.Descripcion == "PACIENTE"){
+
+            if (rol.Rol.Descripcion == "PACIENTE"){
+
                 if(usuario != null)
                 {
+                    DateTime birth = DateTime.Parse(paciente.FechaNacimiento.ToString());
+                    DateTime today = DateTime.Today;
+                    int edad = today.Year - birth.Year;
+                    //int age = int.Parse(edad.ToString());
+
+                    if (today.Month < birth.Month ||
+                    ((today.Month == birth.Month) && (today.Day < birth.Day)))
+                    {
+                        edad--;
+                    }
+
+
                     usuario.Contrasena = null;
 
                     responseUsuario = new ResponseUsuarioById(usuario.Id,usuario.Nombre,
                     usuario.Apellido,usuario.Email,usuario.Contrasena,
                     usuario.NombreUsuario,usuario.Sexo,usuario.PalabraClave,
-                    paciente.FechaNacimiento);
+                    paciente.FechaNacimiento,edad);
 
                     return responseUsuario;
                 }
@@ -178,7 +193,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     responseUsuario =  new ResponseUsuarioById(usuario.Id,usuario.Nombre,
                     usuario.Apellido,usuario.Email,usuario.Contrasena,
                     usuario.NombreUsuario,usuario.Sexo,usuario.PalabraClave,
-                    nullDate);
+                    nullDate,null);
 
                     return responseUsuario;
                 }
