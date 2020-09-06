@@ -29,7 +29,15 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
         public SolicitudTratamiento FindById(int id)
         {
-            throw new System.NotImplementedException();
+            var solicitud = new SolicitudTratamiento();
+            try{
+                solicitud = this.context.SolicitudTratamientos.Single(s => s.Id == id);
+
+            } catch(System.Exception){
+                throw;
+
+            }
+            return solicitud;
         }
 
         public void Save(SolicitudTratamiento entity)

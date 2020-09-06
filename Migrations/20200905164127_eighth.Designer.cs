@@ -3,14 +3,16 @@ using System;
 using Auriculoterapia.Api.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Auriculoterapia.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200905164127_eighth")]
+    partial class eighth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,9 +237,6 @@ namespace Auriculoterapia.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Estado")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<DateTime>("FechaEnvio")
                         .HasColumnType("datetime(6)");
 
@@ -249,9 +248,6 @@ namespace Auriculoterapia.Api.Migrations
 
                     b.Property<int>("FrecuenciaAlDia")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImagenEditada")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("SolicitudTratamientoId")
                         .HasColumnType("int");
