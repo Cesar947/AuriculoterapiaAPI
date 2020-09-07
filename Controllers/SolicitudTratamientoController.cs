@@ -60,6 +60,13 @@ namespace Auriculoterapia.Api.Controllers
             return solicitudTratamientoService.findByPacienteId(pacienteId);
         }
 
+        [Authorize(Roles = "ESPECIALISTA")]
+        [HttpGet("imagen")]
+        public string obtenerImagenPorSolicitud([FromQuery] int solicitudId)
+        {
+            return solicitudTratamientoService.obtenerImagenPorSolicitud(solicitudId); 
+        }
+
         
 
     }
