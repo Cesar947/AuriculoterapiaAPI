@@ -99,7 +99,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             user.Contrasena = null;
 
 
-            return new Response(user.Id,user.NombreUsuario,user.Token, rol.Rol.Descripcion);
+            return new Response(user.Id,user.NombreUsuario,user.Token, rol.Rol.Descripcion,user.Nombre,user.Apellido);
 
         }
 
