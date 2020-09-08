@@ -62,6 +62,11 @@ namespace Auriculoterapia.Api.Repository.Implementation
              return disponibilidad;
          }
 
+         public bool actualizarDisponibilidad(Disponibilidad entity){
+            return true;
+         }
+
+
         public AvailabilityTimeRange obtenerListaHorasDisponibles(string fecha){
             var listarHorasDisponibles = new AvailabilityTimeRange();
             var disponibilidad = new Disponibilidad();
