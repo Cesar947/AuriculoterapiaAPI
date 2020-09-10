@@ -58,6 +58,9 @@ namespace Auriculoterapia.Api.Controllers
             if(nuevaContrasena == null){
                 return BadRequest(new {message = "Nombre de usuario o palabra clave incorrectos"});
             }
+            if(nuevaContrasena.Contrasena == "SAME"){
+                return BadRequest(new {message = "La contraseña nueva es la misma que la actual, volver a modificar la contraseña"});
+            }
 
             return Ok(nuevaContrasena);
 
@@ -98,6 +101,10 @@ namespace Auriculoterapia.Api.Controllers
         public IActionResult ActualizarKeyword([FromBody] ResponseActualizarKeyWord response)
         {
             var user = usuarioService.Actualizar_KeyWord(response.Id,response.PalabraClave,response.NuevaPalabraClave);
+
+            if(user.PalabraClave == "SAME"){
+                return BadRequest(new {message = "Palabra clave nueva se repite con la actual"});
+            }
 
             if(user == null){
                 return BadRequest(new {message = "Palabra clave actual incorrecta"});

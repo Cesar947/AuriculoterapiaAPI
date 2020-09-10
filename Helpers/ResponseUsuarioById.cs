@@ -19,7 +19,9 @@ namespace Auriculoterapia.Api.Helpers
         //public Especialista Especialista {get; set;}
         public int? Edad { get; set; }
 
-        public ResponseUsuarioById(int Id,string Nombre,string Apellido,string Email,string Contrasena,string nombreUsuario,string Sexo,string PalabraClave,DateTime? fechaNacimiento, int? edad)
+        public int? PacienteId{get;set;}
+
+        public ResponseUsuarioById(int Id,string Nombre,string Apellido,string Email,string Contrasena,string nombreUsuario,string Sexo,string PalabraClave,DateTime? fechaNacimiento, int? edad,int? PacienteId)
         {
             this.Id = Id;
             this.Nombre = Nombre;
@@ -31,6 +33,7 @@ namespace Auriculoterapia.Api.Helpers
             this.Sexo = Sexo;
             this.FechaNacimiento = fechaNacimiento;
             this.Edad = edad;
+            this.PacienteId = PacienteId;
             //this.Paciente =paciente;
             //this.Especialista = especialista;
         }
