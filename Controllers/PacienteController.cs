@@ -40,6 +40,14 @@ namespace Controllers
         public IActionResult Post([FromBody] Paciente paciente)
         {
             PacienteService.Save(paciente);
+           
+            if(paciente.Usuario.Id ==0){
+                return BadRequest(new{message = "Usuario o contraseña registrados"});
+            }
+            if(paciente.Usuario.Id == -1){
+                return BadRequest(new{message = "Este correo no se encuentra disponible"});
+            }
+            
             if(paciente.Id != 0)
                 return Ok(paciente); 
             else

@@ -56,11 +56,22 @@ namespace Auriculoterapia.Api.Repository.Implementation
         public void Save(Usuario entity){
             
             try{
-                context.Usuarios.Add(entity);
+                var user = context.Usuarios.FirstOrDefault(x => x.NombreUsuario == entity.NombreUsuario
+                || x.Contrasena == entity.Contrasena);
 
-                context.SaveChanges();
-                rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
+               var emailExsist = context.Usuarios.FirstOrDefault(x => x.Email == entity.Email);
 
+               if(emailExsist != null){
+                   entity.Id = -1;
+               }
+                
+                if(user == null && emailExsist == null){
+                    context.Usuarios.Add(entity);
+
+                    context.SaveChanges();
+                    rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
+                }
+              
             }
             catch{
                 throw;
@@ -123,6 +134,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
             if(user == null){
                 return null;
+            }
+            if(user.Contrasena == password){
+                user.Contrasena = "SAME";
+                return new ResponseActualizarPassword(user.NombreUsuario,user.PalabraClave,user.Contrasena);
             }
 
             user.Contrasena=password;
@@ -208,10 +223,15 @@ namespace Auriculoterapia.Api.Repository.Implementation
             
             ResponseActualizarKeyWord keyWord;
 
+            if(palabraClave == nuevaPalabraClave && usuario != null){
+                return new ResponseActualizarKeyWord(usuario.Id,"SAME","SAME");
+            }
+
             if(usuario != null ){
                 usuario.PalabraClave = nuevaPalabraClave;
                 context.SaveChanges();
-                keyWord = new ResponseActualizarKeyWord();
+                usuario.PalabraClave = "";
+                keyWord = new ResponseActualizarKeyWord(usuario.Id,usuario.PalabraClave,"");
             }else{
                 keyWord = null;
             }    
