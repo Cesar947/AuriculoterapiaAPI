@@ -196,7 +196,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     responseUsuario = new ResponseUsuarioById(usuario.Id,usuario.Nombre,
                     usuario.Apellido,usuario.Email,usuario.Contrasena,
                     usuario.NombreUsuario,usuario.Sexo,usuario.PalabraClave,
-                    paciente.FechaNacimiento,edad);
+                    paciente.FechaNacimiento,edad,paciente.Id);
 
                     return responseUsuario;
                 }
@@ -208,7 +208,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     responseUsuario =  new ResponseUsuarioById(usuario.Id,usuario.Nombre,
                     usuario.Apellido,usuario.Email,usuario.Contrasena,
                     usuario.NombreUsuario,usuario.Sexo,usuario.PalabraClave,
-                    nullDate,null);
+                    nullDate,null,null);
 
                     return responseUsuario;
                 }
