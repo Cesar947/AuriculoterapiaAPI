@@ -48,8 +48,11 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     x.TipoTratamiento == entity.TipoTratamiento);
                     
                 if(evolucionAnteriores!= null){
-                 
-                    entity.Sesion = evolucionAnteriores.Sesion +1;
+                    var evolucionAnteriores2 = context.Evoluciones
+                    .LastOrDefault(x => solicitudTratamiento.PacienteId == IdPaciente &&
+                    x.TipoTratamiento == entity.TipoTratamiento);
+
+                    entity.Sesion = evolucionAnteriores2.Sesion +1;
                     
                 }else{
                     entity.Sesion = 1;
