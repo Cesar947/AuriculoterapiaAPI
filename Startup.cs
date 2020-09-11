@@ -83,6 +83,7 @@ namespace Auriculoterapia.Api
             services.AddTransient<IDisponibilidadRepository, DisponibilidadRepository>();
             services.AddTransient<IHorarioDescartadoRepository, HorarioDescartadoRepository>();
             services.AddTransient<ITratamientoRepository, TratamientoRepository>();
+            services.AddTransient<IEvolucionRepository,EvolucionRepository>();
 
             services.AddTransient<ICitaService,CitaService>(); 
             services.AddTransient<IUsuarioService,UsuarioService>(); 
@@ -91,6 +92,7 @@ namespace Auriculoterapia.Api
             services.AddTransient<ISolicitudTratamientoService, SolicitudTratamientoService>();
             services.AddTransient<IDisponibilidadService, DisponibilidadService>();
             services.AddTransient<ITratamientoService, TratamientoService>();
+            services.AddTransient<IEvolucionService,EvolucionService>();
 
 
             services.AddControllers()
