@@ -47,6 +47,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     .Include(t => t.SolicitudTratamiento.Paciente)
                     .Include(t => t.SolicitudTratamiento.Paciente.Usuario)
                     .Where(t => t.SolicitudTratamiento.Paciente.Id == pacienteId)
+                    .OrderByDescending(t => t.FechaEnvio)
                     .ToList();
             }
             catch (System.Exception)
