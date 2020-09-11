@@ -44,15 +44,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 var solicitudTratamiento = context.SolicitudTratamientos.FirstOrDefault(x => x.Id == tratamiento.SolicitudTratamientoId); //id unico
                 //var evolucionAnteriores = context.Evoluciones.LastOrDefault(x => x.Tratamiento.TipoTratamiento == entity.TratamientoId);
                 var evolucionAnteriores = context.Evoluciones
+                    .OrderByDescending(x => x.Id)
                     .FirstOrDefault(x => solicitudTratamiento.PacienteId == IdPaciente &&
                     x.TipoTratamiento == entity.TipoTratamiento);
                     
                 if(evolucionAnteriores!= null){
-                    var evolucionAnteriores2 = context.Evoluciones
-                    .LastOrDefault(x => solicitudTratamiento.PacienteId == IdPaciente &&
-                    x.TipoTratamiento == entity.TipoTratamiento);
-
-                    entity.Sesion = evolucionAnteriores2.Sesion +1;
+                    
+                    entity.Sesion = evolucionAnteriores.Sesion +1;
                     
                 }else{
                     entity.Sesion = 1;
