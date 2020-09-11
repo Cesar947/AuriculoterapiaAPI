@@ -11,5 +11,7 @@ namespace Auriculoterapia.Api.Service
         IEnumerable<Cita> listarCitasPorUsuarioId(int usuarioId);
 
         bool actualizarEstadoCita(int citaId, string estado);
+
+        void procesarHorariosDescartados(Cita cita, FormularioCita fs=null, FormularioCitaPaciente fp=null);
     }
 }

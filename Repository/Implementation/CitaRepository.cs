@@ -40,7 +40,9 @@ namespace Auriculoterapia.Api.Repository.Implementation
             try{
                 citas = this.context.Citas.Include(c => c.Paciente)
                 .Include(c => c.Paciente.Usuario)                
-                .Where(c => c.Paciente.Usuario.Id == usuarioId).ToList();
+                .Where(c => c.Paciente.Usuario.Id == usuarioId)
+                .OrderByDescending(c => c.Fecha)
+                .ToList();
             }catch(System.Exception){
                 throw;
             }

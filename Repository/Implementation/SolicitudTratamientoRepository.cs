@@ -74,5 +74,20 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }
             return solicitud;
         }
+
+        public string obtenerImagenPorSolicitud(int solicitudId) {
+
+            var solicitud = new SolicitudTratamiento();
+            try
+            {
+                solicitud = this.context.SolicitudTratamientos.Single(s => s.Id == solicitudId);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            return solicitud.ImagenAreaAfectada;
+        
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace Auriculoterapia.Api.Service
 
         void saveByUserId(SolicitudTratamiento entity,int userId);
 
+        string obtenerImagenPorSolicitud(int solicitudId);
+
     }
 }

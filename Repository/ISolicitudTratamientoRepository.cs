@@ -7,6 +7,8 @@ namespace Auriculoterapia.Api.Repository
         SolicitudTratamiento findByPacienteId(int pacienteId);
 
         void saveByUserId(SolicitudTratamiento entity,int userId);
+
+        string obtenerImagenPorSolicitud(int solicitudId);
     }   
 
 }

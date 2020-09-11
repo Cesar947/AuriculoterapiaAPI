@@ -62,6 +62,27 @@ namespace Auriculoterapia.Api.Repository.Implementation
              return disponibilidad;
          }
 
+         public bool actualizarDisponibilidad(Disponibilidad entity){
+            bool actualizo = false;
+            var nDisponibilidad = new Disponibilidad();
+
+            try{
+                nDisponibilidad = this.context.Disponibilidades.FirstOrDefault(d => d.Dia == entity.Dia);
+                nDisponibilidad.HoraInicio = entity.HoraInicio;
+                nDisponibilidad.HoraFin = entity.HoraFin;
+                nDisponibilidad.EspecialistaId = entity.EspecialistaId;
+                nDisponibilidad.Especialista = entity.Especialista;
+                nDisponibilidad.HorariosDescartados = entity.HorariosDescartados;
+                this.context.SaveChanges();
+            } catch(System.Exception){
+                throw;
+
+
+            }
+            return true;
+         }
+
+
         public AvailabilityTimeRange obtenerListaHorasDisponibles(string fecha){
             var listarHorasDisponibles = new AvailabilityTimeRange();
             var disponibilidad = new Disponibilidad();
