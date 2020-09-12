@@ -64,7 +64,9 @@ namespace Auriculoterapia.Api.Controllers
         [HttpGet("imagen")]
         public string obtenerImagenPorSolicitud([FromQuery] int solicitudId)
         {
-            return solicitudTratamientoService.obtenerImagenPorSolicitud(solicitudId); 
+
+            var imagen = solicitudTratamientoService.obtenerImagenPorSolicitud(solicitudId); 
+            return imagen;
         }
 
         
