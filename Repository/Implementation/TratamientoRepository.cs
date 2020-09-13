@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Auriculoterapia.Api.Domain;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Auriculoterapia.Api.Helpers;
 
 namespace Auriculoterapia.Api.Repository.Implementation
 {
@@ -56,5 +57,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }
             return tratamientosDePaciente;
         }
+        
+
     }
 }

@@ -4,6 +4,8 @@ using Auriculoterapia.Api.Repository.Context;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Auriculoterapia.Api.Helpers;
+
 namespace Auriculoterapia.Api.Repository.Implementation
 {
     public class PacienteRepository: IPacienteRepository
@@ -105,6 +107,42 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
         }
 
+        public CantidadPacientesPorSexo retornarPacientesPorSexo(string tratamiento){
+            var estadistica = new CantidadPacientesPorSexo();
+     
+            try{
+               var dbQueryHombres = from u in context.Usuarios
+                            join p in context.Pacientes on u.Id equals p.UsuarioId
+                            join s in context.SolicitudTratamientos on p.Id equals s.PacienteId
+                            join t in context.Tratamientos on s.Id equals t.SolicitudTratamientoId
+                            where t.TipoTratamiento == tratamiento 
+                            where u.Sexo == "Masculino"
+                            select new {
+                                p.Id
+                            };
+                var dbQueryMujeres = from u in context.Usuarios
+                            join p in context.Pacientes on u.Id equals p.UsuarioId
+                            join s in context.SolicitudTratamientos on p.Id equals s.PacienteId
+                            join t in context.Tratamientos on s.Id equals t.SolicitudTratamientoId
+                            where t.TipoTratamiento == tratamiento 
+                            where u.Sexo == "Femenino"
+                            select new {
+                                p.Id
+                            };
+
+                estadistica.cantidadHombres = dbQueryHombres.Count();
+                estadistica.cantidadMujeres = dbQueryMujeres.Count();
+
+
+            } catch(System.Exception){
+                throw;
+
+            }
+
+            return estadistica;
+
+
+        }
 
     }
 }

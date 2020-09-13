@@ -1,4 +1,5 @@
 using Auriculoterapia.Api.Domain;
+using Auriculoterapia.Api.Helpers;
 using Auriculoterapia.Api.Repository;
 using System.Collections.Generic;
 
@@ -26,5 +27,8 @@ namespace Auriculoterapia.Api.Service.Implementation
             return PacienteRepository.busquedaPacientePorPalabra(palabra);
         }
 
+        public CantidadPacientesPorSexo retornarPacientesPorSexo(string tratamiento){
+            return PacienteRepository.retornarPacientesPorSexo(tratamiento);
+        }
     }
 }

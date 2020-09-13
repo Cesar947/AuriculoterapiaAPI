@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Auriculoterapia.Api.Domain;
+using Auriculoterapia.Api.Helpers;
 using Auriculoterapia.Api.Repository;
 
 namespace Auriculoterapia.Api.Service.Implementation
@@ -17,6 +18,8 @@ namespace Auriculoterapia.Api.Service.Implementation
             throw new System.NotImplementedException();
         }
 
+      
+
         public void Save(Evolucion entity)
         {
             throw new System.NotImplementedException();
@@ -25,5 +28,8 @@ namespace Auriculoterapia.Api.Service.Implementation
         public void saveByIdPaciente(Evolucion entity,int IdPaciente){
             evolucionRepository.saveByIdPaciente(entity,IdPaciente);
         }
+
+
+
     }
 }

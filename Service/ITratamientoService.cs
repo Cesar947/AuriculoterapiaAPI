@@ -8,5 +8,6 @@ namespace Auriculoterapia.Api.Service
     {
         bool registrarTratamiento(FormularioTratamiento t);
         IEnumerable<Tratamiento> listarPorPacienteId(int pacienteId);
-    }
+
+    }   
 }
