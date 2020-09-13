@@ -17,6 +17,10 @@ namespace Auriculoterapia.Api.Service.Implementation
             throw new System.NotImplementedException();
         }
 
+        public IEnumerable<Evolucion> getByIdPaciente_TipoTratamiento(string TipoTratamiento,int idPaciente){
+            return evolucionRepository.getByIdPaciente_TipoTratamiento(TipoTratamiento,idPaciente);
+        }
+
         public void Save(Evolucion entity)
         {
             throw new System.NotImplementedException();
