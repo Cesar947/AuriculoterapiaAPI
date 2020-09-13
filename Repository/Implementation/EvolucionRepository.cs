@@ -45,7 +45,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 //var evolucionAnteriores = context.Evoluciones.LastOrDefault(x => x.Tratamiento.TipoTratamiento == entity.TratamientoId);
                 var evolucionAnteriores = context.Evoluciones
                     .OrderByDescending(x => x.Id)
-                    .FirstOrDefault(x => solicitudTratamiento.PacienteId == IdPaciente &&
+                    .FirstOrDefault(x => x.Tratamiento.SolicitudTratamiento.PacienteId == IdPaciente &&
                     x.TipoTratamiento == entity.TipoTratamiento);
                     
                 if(evolucionAnteriores!= null){

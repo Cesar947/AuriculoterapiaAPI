@@ -36,8 +36,11 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 if(isValidEmail){
 
                 usuarioRepository.Save(entity.Usuario);
-                context.Add(entity);
-                context.SaveChanges();
+                if(entity.Usuario.Id != -1){
+                    context.Add(entity);
+                    context.SaveChanges();
+                }
+                
                 }
                 else{
                     Console.WriteLine("Correo Inválido");
