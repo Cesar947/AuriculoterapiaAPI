@@ -111,7 +111,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var estadistica = new CantidadPacientesPorSexo();
      
             try{
-               var dbQueryHombres = from u in context.Usuarios
+               /*var dbQueryHombres = from u in context.Usuarios
                             join p in context.Pacientes on u.Id equals p.UsuarioId
                             join s in context.SolicitudTratamientos on p.Id equals s.PacienteId
                             join t in context.Tratamientos on s.Id equals t.SolicitudTratamientoId
@@ -119,8 +119,15 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             where u.Sexo == "Masculino"
                             select new {
                                 p.Id
-                            };
-                var dbQueryMujeres = from u in context.Usuarios
+                            };*/
+                 var dbQueryHombres = this.context.Tratamientos
+                .Include(t => t.SolicitudTratamiento)
+                .Where(t => t.TipoTratamiento == tratamiento)
+                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == "Masculino")
+                .Select(t => new { pId = t.SolicitudTratamiento.PacienteId})
+                .ToList();
+
+                /*var dbQueryMujeres = from u in context.Usuarios
                             join p in context.Pacientes on u.Id equals p.UsuarioId
                             join s in context.SolicitudTratamientos on p.Id equals s.PacienteId
                             join t in context.Tratamientos on s.Id equals t.SolicitudTratamientoId
@@ -128,15 +135,22 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             where u.Sexo == "Femenino"
                             select new {
                                 p.Id
-                            };
+                            };*/
 
-                estadistica.cantidadHombres = dbQueryHombres.Count();
-                estadistica.cantidadMujeres = dbQueryMujeres.Count();
+                var dbQueryMujeres = this.context.Tratamientos
+                .Include(t => t.SolicitudTratamiento)
+                .Where(t => t.TipoTratamiento == tratamiento)
+                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == "Femenino")
+                .Select(t => new { pId = t.SolicitudTratamiento.PacienteId})
+                .ToList();
+                
+                
+                estadistica.cantidadHombres = dbQueryHombres.Distinct().Count();
+                estadistica.cantidadMujeres = dbQueryMujeres.Distinct().Count();
 
 
             } catch(System.Exception){
                 throw;
-
             }
 
             return estadistica;
