@@ -36,6 +36,10 @@ namespace Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public Tratamiento findById(int id){
+            return this.tratamientoService.FindById(id);
+        }
 
 
     }

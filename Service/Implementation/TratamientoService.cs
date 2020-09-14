@@ -58,6 +58,10 @@ namespace Auriculoterapia.Api.Service.Implementation
             return this.tratamientoRepository.listarPorPacienteId(pacienteId);
         }
 
-    
+        public Tratamiento FindById(int id){
+            return this.tratamientoRepository.FindById(id);
+        }
+
+
     }
 }

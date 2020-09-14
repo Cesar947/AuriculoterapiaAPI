@@ -24,6 +24,23 @@ namespace Auriculoterapia.Api.Repository.Implementation
             throw new System.NotImplementedException();
         }
 
+        public IEnumerable<Evolucion> getByIdPaciente_TipoTratamiento(string TipoTratamiento,int idPaciente){
+            var listaEvolucion = new List<Evolucion>();
+            try{
+                listaEvolucion = context.Evoluciones
+                    //.Include(x => x.Tratamiento)
+                    //.Include(x => x.Tratamiento.SolicitudTratamiento)
+                    .Where(x => x.TipoTratamiento == TipoTratamiento &&
+                    x.Tratamiento.SolicitudTratamiento.PacienteId == idPaciente)
+                    .ToList();
+
+            }catch{
+                throw;
+            }
+            return listaEvolucion;
+
+        }
+
         public void Save(Evolucion entity)
         {
             try{
@@ -45,7 +62,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 //var evolucionAnteriores = context.Evoluciones.LastOrDefault(x => x.Tratamiento.TipoTratamiento == entity.TratamientoId);
                 var evolucionAnteriores = context.Evoluciones
                     .OrderByDescending(x => x.Id)
-                    .FirstOrDefault(x => solicitudTratamiento.PacienteId == IdPaciente &&
+                    .FirstOrDefault(x => x.Tratamiento.SolicitudTratamiento.PacienteId == IdPaciente &&
                     x.TipoTratamiento == entity.TipoTratamiento);
                     
                 if(evolucionAnteriores!= null){
