@@ -19,7 +19,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var citas = new List<Cita>();
             try{
                 citas = this.context.Citas.Include(c => c.Paciente).Include(c => c.Paciente.Usuario).Include(c => c.TipoAtencion)
-                .OrderByDescending(c => c.Fecha).ToList();
+                .OrderByDescending(c => c.Id).ToList();
             } catch(System.Exception){
                 throw;
             }
@@ -41,7 +41,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 citas = this.context.Citas.Include(c => c.Paciente)
                 .Include(c => c.Paciente.Usuario)                
                 .Where(c => c.Paciente.Usuario.Id == usuarioId)
-                .OrderByDescending(c => c.Fecha)
+                .OrderByDescending(c => c.Id)
                 .ToList();
             }catch(System.Exception){
                 throw;
