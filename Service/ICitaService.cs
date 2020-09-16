@@ -13,5 +13,10 @@ namespace Auriculoterapia.Api.Service
         bool actualizarEstadoCita(int citaId, string estado);
 
         void procesarHorariosDescartados(Cita cita, FormularioCita fs=null, FormularioCitaPaciente fp=null);
+    
+        Cita findByIdParaPaciente(int id);
+
+        bool actualizarCita(int id, FormularioCitaPaciente form);
+
     }
 }

@@ -55,5 +55,17 @@ namespace Auriculoterapia.Api.Controllers
             return CitaService.actualizarEstadoCita(citaId, estado);
         }
 
+        [HttpGet("{id}")]
+        [Authorize(Roles = "PACIENTE")]
+        public Cita findByIdParaPaciente([FromRoute] int id){
+            return CitaService.findByIdParaPaciente(id);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "PACIENTE")]
+        public bool actualizarCita([FromRoute] int id, FormularioCitaPaciente form){
+            return CitaService.actualizarCita(id, form);
+        }
+
     }
 }

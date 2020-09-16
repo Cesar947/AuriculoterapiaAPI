@@ -18,11 +18,11 @@ namespace Auriculoterapia.Api.Controllers
 
 
         [HttpPost]
-        public ActionResult registrarDisponibilidad([FromBody] FormularioDisponibilidad entity, 
+        public bool registrarDisponibilidad([FromBody] FormularioDisponibilidad entity, 
                                             [FromQuery] int especialistaId){
                 
-                this.DisponibilidadService.registrarDisponibilidad(entity, especialistaId);
-                return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status201Created);
+                return this.DisponibilidadService.registrarDisponibilidad(entity, especialistaId);
+                
           }
 
         [HttpGet]

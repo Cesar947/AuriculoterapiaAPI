@@ -30,5 +30,7 @@ namespace AuriculoterapiaAPI.Controllers
             return Ok(evoluciones);
         }
 
+    
+
     }
 }

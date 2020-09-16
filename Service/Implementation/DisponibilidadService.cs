@@ -33,12 +33,13 @@ namespace Auriculoterapia.Api.Service.Implementation
             throw new System.NotImplementedException();
         }
 
-        public void registrarDisponibilidad(FormularioDisponibilidad entity, int especialistaId){
+        public bool registrarDisponibilidad(FormularioDisponibilidad entity, int especialistaId){
             
             var conversor = new ConversorDeFechaYHora(); 
             var disponibilidad =  new Disponibilidad();
             var horariosDescartados = new List<HorarioDescartado>();
             var disponibilidadGuardada = new Disponibilidad();
+            var registrado = false;
             try{
                 disponibilidadGuardada = listarPorFecha(entity.dia);
                 if (disponibilidadGuardada == null){
@@ -61,13 +62,18 @@ namespace Auriculoterapia.Api.Service.Implementation
                     horarioDescartado.DisponibilidadId = disInserted.Id;
                     horarioDescartado.Disponibilidad = disInserted;
                     this.HorarioDescartadoRepository.Save(horarioDescartado);
-
+                    registrado = true;
                 }
+
+                } else{
+                    registrado = false;
                 }
 
             } catch(System.Exception){
                 throw;
             }
+
+            return registrado;
             
         }
 
