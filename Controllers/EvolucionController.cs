@@ -24,9 +24,15 @@ namespace AuriculoterapiaAPI.Controllers
                 return BadRequest(new {message = "error en el registro, vuelva a intentar"}); 
         }
 
-        [HttpGet("{idPaciente}/{TipoTratamiento}")]
+        /*[HttpGet("{idPaciente}/{TipoTratamiento}")]
         public IActionResult getByIdPaciete_TipoTratamiento(string TipoTratamiento,int idPaciente){
             var evoluciones = evolucionService.getByIdPaciente_TipoTratamiento(TipoTratamiento,idPaciente);
+            return Ok(evoluciones);
+        }*/
+
+        [HttpGet("{idPaciente}/{TipoTratamiento}")]
+        public IActionResult getByIdPaciete_TipoTratamiento2(string TipoTratamiento,int idPaciente){
+            var evoluciones = evolucionService.getByIdPaciente_TipoTratamiento_Results(TipoTratamiento,idPaciente);
             return Ok(evoluciones);
         }
 

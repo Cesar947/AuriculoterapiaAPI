@@ -3,6 +3,8 @@ using Auriculoterapia.Api.Domain;
 using Auriculoterapia.Api.Repository.Context;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using AuriculoterapiaAPI.Helpers;
+using System;
 
 namespace Auriculoterapia.Api.Repository.Implementation
 {
@@ -41,6 +43,54 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
         }
 
+        public IEnumerable<ResponseResultsPatient> getByIdPaciente_TipoTratamiento_Results(string TipoTratamiento, int idPaciente){
+            var listaResponseResultsPatient = new List<ResponseResultsPatient>();
+            var listaEvolucion = new List<Evolucion>();
+            try{
+                listaEvolucion = context.Evoluciones
+                    .Include(x => x.Tratamiento)
+                    .Include(x => x.Tratamiento.SolicitudTratamiento)
+                    .Include(x => x.Tratamiento.SolicitudTratamiento.Paciente)
+                    .Include(x => x.Tratamiento.SolicitudTratamiento.Paciente.Usuario)
+                    .Where(x => x.TipoTratamiento == TipoTratamiento &&
+                    x.Tratamiento.SolicitudTratamiento.PacienteId == idPaciente)
+                    .ToList();
+
+                foreach(var lista in listaEvolucion){
+                    float altura = lista.Tratamiento.SolicitudTratamiento.Altura;
+                    float IMC = lista.Peso/(altura*altura);
+                    var sexo = lista.Tratamiento.SolicitudTratamiento.Paciente.Usuario.Sexo;
+
+
+                    DateTime birth = DateTime.Parse(lista.Tratamiento.SolicitudTratamiento.Paciente.FechaNacimiento.ToString());
+                    DateTime today = DateTime.Today;
+                    int edad = today.Year - birth.Year;
+                    //int age = int.Parse(edad.ToString());
+
+                    if (today.Month < birth.Month ||
+                    ((today.Month == birth.Month) && (today.Day < birth.Day)))
+                    {
+                        edad--;
+                    }
+                    double grasaCorporal;
+                    if(sexo=="Masculino"){
+                        grasaCorporal = 1.2*IMC+(0.23*edad)-(10.8*1)-5.4;
+                    }else{
+                        grasaCorporal = 1.2*IMC+(0.23*edad)-(10.8*0)-5.4;
+                    }
+
+                    var newResponse = new ResponseResultsPatient(lista.EvolucionNumero,lista.Peso,lista.Sesion,
+                    lista.TipoTratamiento,lista.TratamientoId,IMC,grasaCorporal);
+
+                    listaResponseResultsPatient.Add(newResponse);
+                }
+            }catch{
+                throw;
+            }
+            return listaResponseResultsPatient;
+            
+        }
+
         public void Save(Evolucion entity)
         {
             try{
@@ -73,6 +123,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     entity.Sesion = 1;
                 }
                 
+                tratamiento.Estado = "Completado";
                 context.Evoluciones.Add(entity);
                 context.SaveChanges();
             }catch{

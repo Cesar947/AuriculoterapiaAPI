@@ -34,15 +34,14 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 var isValidEmail = usuarioRepository.IsValidEmail(entity.Usuario.Email); 
                 
                 if(isValidEmail){
-
-                usuarioRepository.Save(entity.Usuario);
-                if(entity.Usuario.Id != -1){
-                    context.Add(entity);
-                    context.SaveChanges();
-                }
-                
+                    usuarioRepository.Save(entity.Usuario);
+                    if(entity.Usuario.Id > 0){
+                        context.Add(entity);
+                        context.SaveChanges();
+                    }
                 }
                 else{
+                    entity.Id = -1;
                     Console.WriteLine("Correo Inválido");
                 }
                 

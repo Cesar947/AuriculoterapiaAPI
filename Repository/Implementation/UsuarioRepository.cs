@@ -63,13 +63,18 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
                if(emailExsist != null){
                    entity.Id = -1;
+               } else if(entity.Contrasena == entity.PalabraClave){
+                   entity.Id = -2;
+               } else if(entity.NombreUsuario == entity.Contrasena || entity.NombreUsuario == entity.PalabraClave){
+                   entity.Id = -3;
                }
                 
-                if(user == null && emailExsist == null){
+                if(user == null && emailExsist == null){              
+                   if( entity.Id >=0){
                     context.Usuarios.Add(entity);
-
                     context.SaveChanges();
                     rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
+                   }
                 }
               
             }
@@ -132,11 +137,21 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var user = context.Usuarios.FirstOrDefault(x =>x.NombreUsuario == nombreUsuario
             && x.PalabraClave == palabraClave);
 
+            var userContrasena = context.Usuarios.FirstOrDefault(x => x.Contrasena == password);
+
             if(user == null){
                 return null;
             }
             if(user.Contrasena == password){
                 user.Contrasena = "SAME";
+                return new ResponseActualizarPassword(user.NombreUsuario,user.PalabraClave,user.Contrasena);
+            }
+            if(userContrasena != null){
+                user.Contrasena = "EXISTENTE";
+                return new ResponseActualizarPassword(user.NombreUsuario,user.PalabraClave,user.Contrasena);
+            }
+            if(user.PalabraClave == password){
+                user.Contrasena = "SAMEKEYWORD";
                 return new ResponseActualizarPassword(user.NombreUsuario,user.PalabraClave,user.Contrasena);
             }
 
@@ -225,6 +240,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
             if(palabraClave == nuevaPalabraClave && usuario != null){
                 return new ResponseActualizarKeyWord(usuario.Id,"SAME","SAME");
+            }
+
+            if(nuevaPalabraClave == usuario.NombreUsuario && usuario != null){
+                return new ResponseActualizarKeyWord(usuario.Id,"SAMEUSER","SAMEUSER");
             }
 
             if(usuario != null ){
