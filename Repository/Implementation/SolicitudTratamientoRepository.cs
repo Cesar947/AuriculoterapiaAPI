@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Auriculoterapia.Api.Domain;
@@ -89,5 +90,21 @@ namespace Auriculoterapia.Api.Repository.Implementation
             return solicitud.ImagenAreaAfectada;
         
         }
+
+        public bool actualizarEstadoDeSolicitudDeTratamiento(int solicitudId, string estado){
+            var actualizado = false;
+            try{
+                var solicitud = this.context.SolicitudTratamientos.Single(s => s.Id == solicitudId);
+                solicitud.Estado = estado;
+                this.context.SaveChanges();
+                actualizado = true;
+            } catch(Exception e){
+                throw;
+            }
+            return actualizado;
+
+        }
+
+        
     }
 }
