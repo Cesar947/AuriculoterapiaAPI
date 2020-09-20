@@ -4,6 +4,7 @@ using Auriculoterapia.Api.Helpers;
 using Auriculoterapia.Api.Service;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Controllers
 {
@@ -39,6 +40,7 @@ namespace Controllers
         public Tratamiento findById(int id){
             return this.tratamientoService.FindById(id);
         }
+
 
     }
 }

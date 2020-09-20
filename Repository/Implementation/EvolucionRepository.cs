@@ -117,7 +117,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     
                 if(evolucionAnteriores!= null){
                     
-                    entity.Sesion = evolucionAnteriores.Sesion +1;
+                    entity.Sesion = evolucionAnteriores.Sesion + 1;
                     
                 }else{
                     entity.Sesion = 1;

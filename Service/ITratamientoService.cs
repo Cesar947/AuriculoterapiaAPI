@@ -11,4 +11,5 @@ namespace Auriculoterapia.Api.Service
 
         Tratamiento FindById(int id);
     }
+
 }

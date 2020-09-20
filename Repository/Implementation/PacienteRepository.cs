@@ -4,6 +4,8 @@ using Auriculoterapia.Api.Repository.Context;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Auriculoterapia.Api.Helpers;
+
 namespace Auriculoterapia.Api.Repository.Implementation
 {
     public class PacienteRepository: IPacienteRepository
@@ -93,12 +95,14 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             where (terminos.Any(r  => p.Usuario.Nombre.Contains(r))) ||
                                   (terminos.Any(r  => p.Usuario.Apellido.Contains(r)))
                             select p).ToList();*/
-                var dbListPacientes = from p in this.context.Pacientes
-                            select p;
+                var dbListPacientes = from s in this.context.SolicitudTratamientos
+                                        join p in this.context.Pacientes on s.PacienteId equals p.Id
+                                        select p;
+                                        
                 if (!String.IsNullOrEmpty(palabras)){
-                    dbListPacientes = dbListPacientes.Where(p => (p.Usuario.Nombre + " " + p.Usuario.Apellido).Contains(palabras));
+                    dbListPacientes = dbListPacientes.Distinct().Where(p => (p.Usuario.Nombre + " " + p.Usuario.Apellido).Contains(palabras));
                 }
-                pacientes = dbListPacientes.Include(p => p.Usuario).ToList();
+                pacientes = dbListPacientes.Distinct().Include(p => p.Usuario).ToList();
                 
             } catch(System.Exception){
                 throw;
@@ -107,6 +111,56 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
         }
 
+        public CantidadPacientesPorSexo retornarPacientesPorSexo(string tratamiento){
+            var estadistica = new CantidadPacientesPorSexo();
+     
+            try{
+               /*var dbQueryHombres = from u in context.Usuarios
+                            join p in context.Pacientes on u.Id equals p.UsuarioId
+                            join s in context.SolicitudTratamientos on p.Id equals s.PacienteId
+                            join t in context.Tratamientos on s.Id equals t.SolicitudTratamientoId
+                            where t.TipoTratamiento == tratamiento 
+                            where u.Sexo == "Masculino"
+                            select new {
+                                p.Id
+                            };*/
+                 var dbQueryHombres = this.context.Tratamientos
+                .Include(t => t.SolicitudTratamiento)
+                .Where(t => t.TipoTratamiento == tratamiento)
+                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == "Masculino")
+                .Select(t => new { pId = t.SolicitudTratamiento.PacienteId})
+                .ToList();
+
+                /*var dbQueryMujeres = from u in context.Usuarios
+                            join p in context.Pacientes on u.Id equals p.UsuarioId
+                            join s in context.SolicitudTratamientos on p.Id equals s.PacienteId
+                            join t in context.Tratamientos on s.Id equals t.SolicitudTratamientoId
+                            where t.TipoTratamiento == tratamiento 
+                            where u.Sexo == "Femenino"
+                            select new {
+                                p.Id
+                            };*/
+
+                var dbQueryMujeres = this.context.Tratamientos
+                .Include(t => t.SolicitudTratamiento)
+                .Where(t => t.TipoTratamiento == tratamiento)
+                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == "Femenino")
+                .Select(t => new { pId = t.SolicitudTratamiento.PacienteId})
+                .ToList();
+                
+                
+                estadistica.cantidadHombres = dbQueryHombres.Distinct().Count();
+                estadistica.cantidadMujeres = dbQueryMujeres.Distinct().Count();
+
+
+            } catch(System.Exception){
+                throw;
+            }
+
+            return estadistica;
+
+
+        }
 
     }
 }

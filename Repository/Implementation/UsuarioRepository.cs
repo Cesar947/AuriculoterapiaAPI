@@ -301,5 +301,8 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }    
         }
 
+        
+        
+
     }
 }

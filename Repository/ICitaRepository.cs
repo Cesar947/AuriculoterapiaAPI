@@ -8,6 +8,7 @@ namespace Auriculoterapia.Api.Repository
         IEnumerable<Cita> listarCitasPorUsuarioId(int usuarioId);
 
         bool actualizarEstadoCita(int citaId, string estado);
-       
+
+        bool actualizarCita(Cita entity, int id);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Auriculoterapia.Api.Domain;
+using Auriculoterapia.Api.Helpers;
 using Auriculoterapia.Api.Repository;
 using AuriculoterapiaAPI.Helpers;
 
@@ -18,9 +19,11 @@ namespace Auriculoterapia.Api.Service.Implementation
             throw new System.NotImplementedException();
         }
 
+
         public IEnumerable<Evolucion> getByIdPaciente_TipoTratamiento(string TipoTratamiento,int idPaciente){
             return evolucionRepository.getByIdPaciente_TipoTratamiento(TipoTratamiento,idPaciente);
         }
+
 
         public void Save(Evolucion entity)
         {
@@ -34,5 +37,6 @@ namespace Auriculoterapia.Api.Service.Implementation
         public IEnumerable<ResponseResultsPatient> getByIdPaciente_TipoTratamiento_Results(string TipoTratamiento, int idPaciente){
             return evolucionRepository.getByIdPaciente_TipoTratamiento_Results(TipoTratamiento,idPaciente);
         }
+
     }
 }

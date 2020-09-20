@@ -4,6 +4,8 @@ using Auriculoterapia.Api.Domain;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Auriculoterapia.Api.Helpers;
+using System;
 
 namespace Controllers
 {
@@ -64,6 +66,12 @@ namespace Controllers
             return Ok(paciente); 
 
                        
+        }
+
+        [AllowAnonymous]
+        [HttpGet("pacientesPorSexo")]
+        public CantidadPacientesPorSexo retornarPacientesPorSexo([FromQuery] string tratamiento){
+            return this.PacienteService.retornarPacientesPorSexo(tratamiento);
         }
 
     }

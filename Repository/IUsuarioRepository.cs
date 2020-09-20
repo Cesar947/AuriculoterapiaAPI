@@ -16,5 +16,7 @@ namespace Auriculoterapia.Api.Repository
        ResponseUsuarioById BuscarPorId(int userId);
 
        ResponseActualizarKeyWord Actualizar_KeyWord(int idUser,string palabraClave,string nuevaPalabraClave);
+    
+      
     }
 }
