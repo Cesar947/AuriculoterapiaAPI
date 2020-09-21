@@ -12,6 +12,8 @@ namespace Auriculoterapia.Api.Repository
 
         
         bool actualizarEstadoDeSolicitudDeTratamiento(int solicitudId, string estado);
+
+        int contarSolicitudesEnProcesoDelPaciente(int pacienteId);
     
     }   
 
