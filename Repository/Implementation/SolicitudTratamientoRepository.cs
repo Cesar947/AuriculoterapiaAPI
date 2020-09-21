@@ -105,6 +105,18 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
         }
 
+        public int contarSolicitudesEnProcesoDelPaciente(int pacienteId){
+            var cantidad = 0;
+            try{
+                cantidad = this.context.SolicitudTratamientos.Where(s => s.PacienteId == pacienteId
+                && s.Estado.Equals("En Proceso")).Count();
+
+            } catch(Exception e){
+                throw;
+            }
+            return cantidad;
+        }
+
         
     }
 }

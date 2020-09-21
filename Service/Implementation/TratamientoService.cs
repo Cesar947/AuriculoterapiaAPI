@@ -40,7 +40,7 @@ namespace Auriculoterapia.Api.Service.Implementation
                 nuevoTratamiento.SolicitudTratamiento = solicitudAResponder;
 
                 solicitudTratamientoRepository.actualizarEstadoDeSolicitudDeTratamiento(
-                    nuevoTratamiento.SolicitudTratamientoId, "Respondida"
+                    nuevoTratamiento.SolicitudTratamientoId, "Respondido"
                 );
 
                 nuevoTratamiento.Estado = "En Proceso";
