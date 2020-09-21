@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Auriculoterapia.Api.Domain;
-using Auriculoterapia.Api.Helpers;
+using AuriculoterapiaAPI.Helpers;
+
 
 namespace Auriculoterapia.Api.Service
 {
@@ -10,6 +11,8 @@ namespace Auriculoterapia.Api.Service
          void saveByIdPaciente(Evolucion entity,int IdPaciente);
 
          IEnumerable<Evolucion> getByIdPaciente_TipoTratamiento(string TipoTratamiento,int idPaciente);
+  
+         IEnumerable<ResponseResultsPatient> getByIdPaciente_TipoTratamiento_Results(string TipoTratamiento, int idPaciente);
 
     }
 }

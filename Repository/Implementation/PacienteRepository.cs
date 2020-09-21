@@ -36,15 +36,14 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 var isValidEmail = usuarioRepository.IsValidEmail(entity.Usuario.Email); 
                 
                 if(isValidEmail){
-
-                usuarioRepository.Save(entity.Usuario);
-                if(entity.Usuario.Id != -1){
-                    context.Add(entity);
-                    context.SaveChanges();
-                }
-                
+                    usuarioRepository.Save(entity.Usuario);
+                    if(entity.Usuario.Id > 0){
+                        context.Add(entity);
+                        context.SaveChanges();
+                    }
                 }
                 else{
+                    entity.Id = -1;
                     Console.WriteLine("Correo Inválido");
                 }
                 
@@ -96,12 +95,14 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             where (terminos.Any(r  => p.Usuario.Nombre.Contains(r))) ||
                                   (terminos.Any(r  => p.Usuario.Apellido.Contains(r)))
                             select p).ToList();*/
-                var dbListPacientes = from p in this.context.Pacientes
-                            select p;
+                var dbListPacientes = from s in this.context.SolicitudTratamientos
+                                        join p in this.context.Pacientes on s.PacienteId equals p.Id
+                                        select p;
+                                        
                 if (!String.IsNullOrEmpty(palabras)){
-                    dbListPacientes = dbListPacientes.Where(p => (p.Usuario.Nombre + " " + p.Usuario.Apellido).Contains(palabras));
+                    dbListPacientes = dbListPacientes.Distinct().Where(p => (p.Usuario.Nombre + " " + p.Usuario.Apellido).Contains(palabras));
                 }
-                pacientes = dbListPacientes.Include(p => p.Usuario).ToList();
+                pacientes = dbListPacientes.Distinct().Include(p => p.Usuario).ToList();
                 
             } catch(System.Exception){
                 throw;
