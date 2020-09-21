@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Auriculoterapia.Api.Domain;
 using Auriculoterapia.Api.Helpers;
 using Auriculoterapia.Api.Repository;
+using AuriculoterapiaAPI.Helpers;
 
 namespace Auriculoterapia.Api.Service.Implementation
 {
@@ -33,7 +34,9 @@ namespace Auriculoterapia.Api.Service.Implementation
             evolucionRepository.saveByIdPaciente(entity,IdPaciente);
         }
 
-
+        public IEnumerable<ResponseResultsPatient> getByIdPaciente_TipoTratamiento_Results(string TipoTratamiento, int idPaciente){
+            return evolucionRepository.getByIdPaciente_TipoTratamiento_Results(TipoTratamiento,idPaciente);
+        }
 
     }
 }
