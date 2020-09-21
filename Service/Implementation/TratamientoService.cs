@@ -36,9 +36,15 @@ namespace Auriculoterapia.Api.Service.Implementation
                 nuevoTratamiento.TiempoPorTerapia = t.TiempoPorTerapia;
                 nuevoTratamiento.ImagenEditada = t.ImagenEditada;
                 nuevoTratamiento.SolicitudTratamientoId = t.SolicitudTratamientoId;
-                nuevoTratamiento.SolicitudTratamiento = 
-                                        solicitudTratamientoRepository.FindById(t.SolicitudTratamientoId);
+                var solicitudAResponder =  solicitudTratamientoRepository.FindById(t.SolicitudTratamientoId);
+                nuevoTratamiento.SolicitudTratamiento = solicitudAResponder;
+
+                solicitudTratamientoRepository.actualizarEstadoDeSolicitudDeTratamiento(
+                    nuevoTratamiento.SolicitudTratamientoId, "Respondida"
+                );
+
                 nuevoTratamiento.Estado = "En Proceso";
+                
                 tratamientoRepository.Save(nuevoTratamiento);                       
                 registroExitoso = true;
 
