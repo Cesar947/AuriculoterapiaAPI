@@ -8,7 +8,6 @@ namespace Auriculoterapia.Api.Repository
     {
         IEnumerable<Tratamiento> listarPorPacienteId(int pacienteId);
 
- 
 
     }
 }

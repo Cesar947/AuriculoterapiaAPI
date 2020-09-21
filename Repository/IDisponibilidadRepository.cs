@@ -14,5 +14,7 @@ namespace Auriculoterapia.Api.Repository
         AvailabilityTimeRange obtenerListaHorasDisponibles(string fecha);
 
         bool actualizarDisponibilidad(Disponibilidad entity);
+
+        
     }
 }
