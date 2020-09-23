@@ -155,6 +155,11 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 return new ResponseActualizarPassword(user.NombreUsuario,user.PalabraClave,user.Contrasena);
             }
 
+            if(user.NombreUsuario == password){
+                user.Contrasena = "SAMEUSER";
+                return new ResponseActualizarPassword(user.NombreUsuario,user.PalabraClave,user.Contrasena);
+            }
+
             user.Contrasena=password;
             context.SaveChanges();
             user.Contrasena=null;

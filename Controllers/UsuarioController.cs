@@ -70,6 +70,10 @@ namespace Auriculoterapia.Api.Controllers
                 return BadRequest(new {message = "La contraseña nueva es la misma que la palabra clave, volver a modificar la contraseña"});
             }
 
+            if(nuevaContrasena.Contrasena == "SAMEUSER"){
+                return BadRequest(new {message = "La contraseña nueva es la misma que el nombre de usuario, volver a modificar la contraseña"});
+            }
+
 
             return Ok(nuevaContrasena);
 
