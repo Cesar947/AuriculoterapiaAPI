@@ -36,8 +36,21 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 var isValidEmail = usuarioRepository.IsValidEmail(entity.Usuario.Email); 
                 
                 if(isValidEmail){
-                    usuarioRepository.Save(entity.Usuario);
-                    if(entity.Usuario.Id > 0){
+                        usuarioRepository.Save(entity.Usuario);
+                        if(entity.Usuario.Id > 0){
+
+                        DateTime birth = DateTime.Parse(entity.FechaNacimiento.ToString());
+                        DateTime today = DateTime.Today;
+                        int edad = today.Year - birth.Year;
+                        //int age = int.Parse(edad.ToString());
+
+                        if (today.Month < birth.Month ||
+                        ((today.Month == birth.Month) && (today.Day < birth.Day)))
+                        {
+                            edad--;
+                        }
+
+                        entity.Edad = edad;
                         context.Add(entity);
                         context.SaveChanges();
                     }
