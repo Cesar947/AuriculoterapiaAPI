@@ -8,11 +8,11 @@ namespace AuriculoterapiaAPI.Helpers
         public string TipoTratamiento {get;set;}
         public int TratamientoId {get;set;}
 
-        public float Imc{get;set;}
+        public double Imc{get;set;}
 
         public double grasaCorporal{get;set;}
 
-        public ResponseResultsPatient(int EvolucionNumero,float Peso, int Sesion,string TipoTratamiento,int TratamientoId, float Imc, double grasaCorporal ){
+        public ResponseResultsPatient(int EvolucionNumero,float Peso, int Sesion,string TipoTratamiento,int TratamientoId, double Imc, double grasaCorporal ){
             this.EvolucionNumero = EvolucionNumero;
             this.Peso = Peso;
             this.Sesion = Sesion;

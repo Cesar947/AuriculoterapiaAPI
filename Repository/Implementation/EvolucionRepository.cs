@@ -58,7 +58,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
                 foreach(var lista in listaEvolucion){
                     float altura = lista.Tratamiento.SolicitudTratamiento.Altura;
-                    float IMC = lista.Peso/(altura*altura);
+                    double IMC = lista.Peso/(altura*altura);
                     var sexo = lista.Tratamiento.SolicitudTratamiento.Paciente.Usuario.Sexo;
 
 
@@ -80,7 +80,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     }
 
                     var newResponse = new ResponseResultsPatient(lista.EvolucionNumero,lista.Peso,lista.Sesion,
-                    lista.TipoTratamiento,lista.TratamientoId,IMC,grasaCorporal);
+                    lista.TipoTratamiento,lista.TratamientoId,Math.Round(IMC,1),Math.Round(grasaCorporal,1));
 
                     listaResponseResultsPatient.Add(newResponse);
                 }
