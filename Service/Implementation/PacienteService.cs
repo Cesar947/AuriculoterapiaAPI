@@ -1,6 +1,7 @@
 using Auriculoterapia.Api.Domain;
 using Auriculoterapia.Api.Helpers;
 using Auriculoterapia.Api.Repository;
+using System;
 using System.Collections.Generic;
 
 
@@ -27,8 +28,25 @@ namespace Auriculoterapia.Api.Service.Implementation
             return PacienteRepository.busquedaPacientePorPalabra(palabra);
         }
 
-        public CantidadPacientesPorSexo retornarPacientesPorSexo(string tratamiento){
-            return PacienteRepository.retornarPacientesPorSexo(tratamiento);
+        public CantidadPacientesPorSexo retornarPacientesPorSexo(){
+            return PacienteRepository.retornarPacientesPorSexo();
+        }
+
+        public CantidadPacientePorEdad retornarPacientesPorEdad(){
+            return PacienteRepository.retornarPacientesPorEdad();
+        }
+
+        public List<ResponsePacientesObesidad> retornarCantidadPacientesPorEdadObesidad(string sexo){
+            var listaResponse = new List<ResponsePacientesObesidad>();
+            try{
+                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(14, 17, sexo, "Adolescentes"));
+                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(18, 30, sexo, "Jóvenes"));
+                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(31, 31, sexo, "Adultos"));
+                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(31, 31, sexo, "Adultos mayores"));
+            } catch(Exception e){
+                throw;
+            }
+            return listaResponse;
         }
     }
 }

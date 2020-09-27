@@ -22,6 +22,8 @@ namespace Auriculoterapia.Api.Helpers
             return hora.ToString("HH:mm");
         }   
 
+        
+
           /*public DateTime TransformarDiaEnEspanolAFecha(string fecha){
             //Formato de disponibilidad: "dddd, dd MMMM yyyy"
 

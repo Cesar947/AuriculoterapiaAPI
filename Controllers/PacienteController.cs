@@ -70,8 +70,20 @@ namespace Controllers
 
         [AllowAnonymous]
         [HttpGet("pacientesPorSexo")]
-        public CantidadPacientesPorSexo retornarPacientesPorSexo([FromQuery] string tratamiento){
-            return this.PacienteService.retornarPacientesPorSexo(tratamiento);
+        public CantidadPacientesPorSexo retornarPacientesPorSexo(){
+            return this.PacienteService.retornarPacientesPorSexo();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("pacientesPorEdad")]
+        public CantidadPacientePorEdad retornarPacientesPorEdad(){
+            return this.PacienteService.retornarPacientesPorEdad();
+        } 
+
+        [AllowAnonymous]
+        [HttpGet("pacientesObesidad")]
+        public List<ResponsePacientesObesidad> retornarResultadosPacientesObesidad([FromQuery] string sexo){
+            return this.PacienteService.retornarCantidadPacientesPorEdadObesidad(sexo);
         }
 
     }

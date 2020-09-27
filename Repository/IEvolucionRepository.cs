@@ -11,5 +11,7 @@ namespace Auriculoterapia.Api.Repository
         IEnumerable<Evolucion> getByIdPaciente_TipoTratamiento(string TipoTratamiento,int idPaciente);
 
         IEnumerable<ResponseResultsPatient> getByIdPaciente_TipoTratamiento_Results(string TipoTratamiento, int idPaciente);
+
+      
     }
 }

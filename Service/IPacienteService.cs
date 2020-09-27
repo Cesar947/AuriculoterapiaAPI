@@ -10,6 +10,10 @@ namespace Auriculoterapia.Api.Service
     {
         IEnumerable<Paciente> buscarPorPalabra(string palabra);
 
-        CantidadPacientesPorSexo retornarPacientesPorSexo(string tratamiento);
+        CantidadPacientesPorSexo retornarPacientesPorSexo();
+
+        CantidadPacientePorEdad retornarPacientesPorEdad();
+
+        List<ResponsePacientesObesidad> retornarCantidadPacientesPorEdadObesidad(string sexo);
     }
 }

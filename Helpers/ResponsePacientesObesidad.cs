@@ -4,9 +4,9 @@ namespace Auriculoterapia.Api.Helpers
     {
         public string TipoPacientePorEdad {get;set;}
         public int Cantidad {get; set;}
-        public float ImcPromedio {get; set;}
-        public float PorcentajeGcPromedio {get; set;}
-        public float TipoIndicadorImc {get; set;}
-        public float TipoIndicadorGc {get; set;}
+        public double ImcPromedio {get; set;}
+        public double PorcentajeGcPromedio {get; set;}
+        public string TipoIndicadorImc {get; set;}
+        public string TipoIndicadorGc {get; set;}
     }
 }

@@ -1,6 +1,6 @@
 namespace Auriculoterapia.Api.Helpers
 {
-    public class PacientesPorNivelDeMejoraActual
+    public class CantidadPacientesPorNivel
     {
         public int cantidadNivelUno;
         public int cantidadNivelDos;
