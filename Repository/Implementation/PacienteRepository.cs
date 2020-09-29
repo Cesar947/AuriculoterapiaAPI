@@ -130,16 +130,18 @@ namespace Auriculoterapia.Api.Repository.Implementation
      
             try{
                
-                 var dbQueryHombres = this.context.Tratamientos
-                .Include(t => t.SolicitudTratamiento)
-                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == "Masculino")
-                .Select(t => new { pId = t.SolicitudTratamiento.PacienteId})
+                 var dbQueryHombres = this.context.Evoluciones
+                .Include(e => e.Tratamiento.SolicitudTratamiento)
+                .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                .Where(e => e.Tratamiento.SolicitudTratamiento.Paciente.Usuario.Sexo == "Masculino")
+                .Select(e => new { pId = e.Tratamiento.SolicitudTratamiento.PacienteId})
                 .ToList();
 
-                var dbQueryMujeres = this.context.Tratamientos
-                .Include(t => t.SolicitudTratamiento)
-                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == "Femenino")
-                .Select(t => new { pId = t.SolicitudTratamiento.PacienteId})
+                var dbQueryMujeres = this.context.Evoluciones
+                .Include(e => e.Tratamiento.SolicitudTratamiento)
+                .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                .Where(e => e.Tratamiento.SolicitudTratamiento.Paciente.Usuario.Sexo == "Femenino")
+                .Select(e => new { pId = e.Tratamiento.SolicitudTratamiento.PacienteId})
                 .ToList();
                 
                 
@@ -156,63 +158,69 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
         }
 
-        public int cantidadPacientesPorEdad(int min, int max, string tratamiento=""){
-            var cantidad = 0;
+        public List<Paciente> pacientesPorEdad(int min, int max, string tratamiento="", string sexo=""){
+            var result = new List<Paciente>();
             try{
+                var pacientes = new List<Paciente>();
                 if(tratamiento != ""){
-                    cantidad = this.context.Tratamientos
-                    .Include(t => t.SolicitudTratamiento)
-                    .Include(t => t.SolicitudTratamiento.Paciente)
-                    .Where(t => t.SolicitudTratamiento.Paciente.Edad >= min
-                    && t.SolicitudTratamiento.Paciente.Edad <= max)
-                    .Where(t => t.TipoTratamiento == tratamiento)
-                    .Select(t => new {pId = t.SolicitudTratamiento.Paciente.Id})
-                    .ToList().Distinct().Count(); 
+                    if(sexo != ""){
+                        pacientes = this.context.Evoluciones
+                        .Include(e => e.Tratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        
+                        .Where(e => e.TipoTratamiento == tratamiento)
+                        .Where(e => e.Tratamiento.SolicitudTratamiento.Paciente.Usuario.Sexo == sexo)
+                        .Select(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        .ToList();
+                    } else{
+                         pacientes = this.context.Evoluciones
+                        .Include(e => e.Tratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        
+                        .Where(e => e.TipoTratamiento == tratamiento)
+                        .Select(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        .ToList();
+                    }
+
+                    
 
                 } else{
-                    cantidad = this.context.Tratamientos
-                    .Include(t => t.SolicitudTratamiento)
-                    .Include(t => t.SolicitudTratamiento.Paciente)
-                    .Where(t => t.SolicitudTratamiento.Paciente.Edad >= min
-                    && t.SolicitudTratamiento.Paciente.Edad <= max)
-                    .Select(t => new {pId = t.SolicitudTratamiento.Paciente.Id})
-                    .ToList().Distinct().Count(); 
+                     pacientes = this.context.Evoluciones
+                        .Include(e => e.Tratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        
+                        .Select(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        .ToList(); 
+                }
+                
+                if(pacientes != null || pacientes.Count() > 0){
+                    foreach(var p in pacientes){
+                        var edad = CalculoValores.calculoEdad(p.FechaNacimiento);
+                        if(edad >= min && edad <= max){
+                            result.Add(p);
+                        }
+                    }
                 }
                 
             } catch(Exception e){
                 throw;
             }
-            return cantidad;
+            return result;
 
         }
 
         
-        public List<double> calculoIMCyGCPromedio(string sexo, int min, int max, string tratamiento){
+        public List<double> calculoIMCyGCPromedio(List<Paciente> pacientes, string sexo){
             var IMCPromedio = 0.0;
             var GCPromedio = 0.0;
             var listaPromedios = new List<double>();
             try{
-               
-               var pacientes = this.context.Tratamientos
-                                .Include(t => t.SolicitudTratamiento)
-                                .Include(t => t.SolicitudTratamiento.Paciente)
-                                .Include(t => t.SolicitudTratamiento.Paciente.Usuario)
-                                .Where(t => t.SolicitudTratamiento.Paciente.Usuario.Sexo == sexo)
-                                .Where(t => t.TipoTratamiento == tratamiento)
-                                .Select(t => t.SolicitudTratamiento.Paciente)
-                                .ToList();
 
-                if(pacientes.Count > 0){
-                    var pacientesPorEdad = new List<Paciente>();
-                    foreach(var p in pacientes){
-                        var edad = CalculoValores.calculoEdad(p.FechaNacimiento);
-                        if(edad >= min && edad <= max){
-                            pacientesPorEdad.Add(p);
-                        }
-                    }
-
-                    if(pacientesPorEdad.Count() > 0){
-                        foreach(var p in pacientesPorEdad){
+               if(pacientes.Count() > 0){
+                        foreach(var p in pacientes){
                             var sesionMaxima = this.context.Evoluciones
                                     .Include(e => e.Tratamiento)
                                     .Include(e => e.Tratamiento.SolicitudTratamiento)
@@ -228,6 +236,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
                                 var altura = evolucion.Tratamiento.SolicitudTratamiento.Altura;
                                 var peso = evolucion.Peso;
+                               
                                 var IMC = CalculoValores.calculoIMC(
                                     altura,
                                     peso);
@@ -242,10 +251,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                         }
                    
                 
-                        if(IMCPromedio != 0) listaPromedios.Add(IMCPromedio/(pacientesPorEdad.Count()));
-                        if(GCPromedio != 0) listaPromedios.Add(GCPromedio/(pacientesPorEdad.Count()));
+                        if(IMCPromedio != 0) listaPromedios.Add(IMCPromedio/(pacientes.Count()));
+                        if(GCPromedio != 0) listaPromedios.Add(GCPromedio/(pacientes.Count()));
                      }
-                    }
+                    
                 
                 
             } catch(Exception e){
@@ -259,10 +268,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var resultado = new CantidadPacientePorEdad();
             try{
                 
-                resultado.cantAdolescentes = cantidadPacientesPorEdad(14, 17);
-                resultado.cantJovenes = cantidadPacientesPorEdad(18, 30);
-                resultado.cantAdultos = cantidadPacientesPorEdad(31, 45);
-                resultado.cantAdultosMayores = cantidadPacientesPorEdad(46, 60);
+                resultado.cantAdolescentes = pacientesPorEdad(14, 17).Distinct().Count();
+                resultado.cantJovenes = pacientesPorEdad(18, 30).Distinct().Count();
+                resultado.cantAdultos = pacientesPorEdad(31, 45).Distinct().Count();
+                resultado.cantAdultosMayores = pacientesPorEdad(46, 60).Distinct().Count();
 
             } catch(Exception e){
                 Console.WriteLine(e.Message);
@@ -270,23 +279,48 @@ namespace Auriculoterapia.Api.Repository.Implementation
             return resultado;
         }
 
+        public int calcularPacientesPorNivel(int nivel, string tratamiento)
+        {
+            var resultado = 0;
+            try{
+                var pacientes = this.context.Evoluciones
+                        .Include(e => e.Tratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento)
+                        .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
+                        .Where(e => e.TipoTratamiento == tratamiento)
+                        .Select(e => e.Tratamiento.SolicitudTratamiento.Paciente).Distinct().ToList();
 
-        public CantidadPacientesPorNivel retornarPacientesPorNivel(){
+                foreach(var p in pacientes){
+                    var sesionMaxima = this.context.Evoluciones
+                                    .Include(e => e.Tratamiento)
+                                    .Include(e => e.Tratamiento.SolicitudTratamiento)
+                                    .Where(e => e.Tratamiento.SolicitudTratamiento.PacienteId == p.Id)
+                                    .Select(e => e.Sesion).Max();
+
+                    var evolucion = this.context.Evoluciones
+                                    .Include(e => e.Tratamiento)
+                                    .Include(e => e.Tratamiento.SolicitudTratamiento)
+                                    .Where(e => e.Tratamiento.SolicitudTratamiento.PacienteId == p.Id)
+                                    .Where(e => e.Sesion == sesionMaxima)
+                                    .Where(e => e.EvolucionNumero == nivel);
+                    if(evolucion != null){
+                        resultado += 1;
+                    }
+
+                }
+                        
+                        
+            } catch(Exception e){
+                throw;
+            }
+            return resultado;
+
+        }
+
+        public CantidadPacientesPorNivel retornarPacientesPorNivel(string tratamiento){
             var resultado = new CantidadPacientesPorNivel();
             try{
-               var evolucionesObesidad = this.context.Evoluciones
-                                .Include(e => e.Tratamiento)
-                                .Include(e => e.Tratamiento.SolicitudTratamiento)
-                                .Include(e => e.Tratamiento.SolicitudTratamiento.Paciente)
-                                .Where(e => e.TipoTratamiento == "Obesidad")
-                                .OrderByDescending(e => e.TipoTratamiento)
-                                .OrderByDescending(e => e.Sesion)
-                                .Select(e => new {
-                                    tipoTratamiento = e.TipoTratamiento,
-                                    sesion = e.Sesion,
-                                    pId = e.Tratamiento.SolicitudTratamiento.PacienteId,
-                                    nivel = e.EvolucionNumero}
-                                ).ToList();
+               resultado.cantidadNivelUno = calcularPacientesPorNivel(1, tratamiento);
 
             } catch(Exception e){
                 Console.WriteLine(e.Message);
@@ -301,11 +335,12 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var result = new ResponsePacientesObesidad();
         
             try{
-                result.Cantidad = cantidadPacientesPorEdad(min, max, "Obesidad");
+                var pacientes = pacientesPorEdad(min, max, "Obesidad", sexo);
+                result.Cantidad = pacientes.Distinct().Count();
                 result.TipoPacientePorEdad = tipoPacientePorEdad;
               
                 
-                var IMCyGC = calculoIMCyGCPromedio(sexo, min, max, "Obesidad");
+                var IMCyGC = calculoIMCyGCPromedio(pacientes.Distinct().ToList(), sexo);
                 if(IMCyGC != null && IMCyGC.Count() > 0){
                     result.ImcPromedio = IMCyGC[0];
                     result.PorcentajeGcPromedio = IMCyGC[1];
@@ -318,8 +353,8 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 } else{
                     result.ImcPromedio = 0;
                     result.PorcentajeGcPromedio = 0;
-                    result.TipoIndicadorImc = "";
-                    result.TipoIndicadorGc = "";
+                    result.TipoIndicadorImc = "-";
+                    result.TipoIndicadorGc = "-";
                 }
                 
 
@@ -334,18 +369,25 @@ namespace Auriculoterapia.Api.Repository.Implementation
             var tipoIMC = "";
             if (IMC <= 15){
                 tipoIMC = "Delgadez muy severa";
+                //tipoIMC = "#F2BA52";
             } else if(IMC > 15 && IMC < 15.9){
                 tipoIMC = "Delgadez severa";
+                //tipoIMC = "#FDE289";
             } else if(IMC >= 16 && IMC <= 18.4){
                 tipoIMC = "Delgadez";
+                //tipoIMC = "#FEF0C1";
             } else if(IMC >= 18.5 && IMC <= 24.9){
-                tipoIMC = "Peso saludable";
+               tipoIMC = "Peso saludable";
+               // tipoIMC = "#D2E1CB";
             } else if(IMC >= 25 && IMC <= 29.9){
-                tipoIMC = "Sobrepeso";
+              tipoIMC = "Sobrepeso";
+               // tipoIMC = "#F5C09E";
             } else if(IMC >= 30 && IMC <= 34.9){
-                tipoIMC = "Obesidad severa";
+               tipoIMC = "Obesidad severa";
+               // tipoIMC = "#EEA070";
             } else if(IMC >= 40){
-                tipoIMC = "Obesidad mórbida";
+               tipoIMC = "Obesidad mórbida";
+               // tipoIMC = "#B8450F";
             }
 
             return tipoIMC;
@@ -356,15 +398,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
              if(sexo == "Masculino"){
                     if(tipoPacientePorEdad == "Adolescentes"
                         || tipoPacientePorEdad == "Jóvenes"){
-                            /*if(GC < 11){
-                                tipoGC = "IDEAL";
-                            } else*/ if(GC >= 11 && GC <= 13){
+                           if(GC <= 13){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC >= 14 && GC <= 20){
+                            else if(GC > 13 && GC <= 20){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC >= 21 && GC <= 23){
+                            else if(GC > 20 && GC <= 23){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 23){
@@ -373,13 +413,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     } else if(tipoPacientePorEdad == "Adultos"){
                             /* if(GC < 12){
                                 tipoGC = "IDEAL";
-                            } else*/ if(GC >= 12 && GC <= 14){
+                            } else*/ if(GC <= 14){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC >= 15 && GC <= 21){
+                            else if(GC > 14 && GC <= 21){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC >= 22 && GC <= 24){
+                            else if(GC > 21 && GC <= 24){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 24){
@@ -388,13 +428,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     } else if(tipoPacientePorEdad == "Adultos mayores"){
                         /*if(GC < 15){
                                 tipoGC = "IDEAL";
-                            } else*/ if(GC >= 15 && GC <= 17){
+                            } else*/ if(GC <= 17){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC >= 18 && GC <= 24){
+                            else if(GC > 17 && GC <= 24){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC >= 25 && GC <= 27){
+                            else if(GC > 24 && GC <= 27){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 27){
@@ -406,13 +446,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
                         || tipoPacientePorEdad == "Jóvenes"){
                             /*if(GC < 16){
                                 tipoGC = "IDEAL";
-                            } else*/ if(GC >= 16 && GC <= 19){
+                            } else*/ if(GC <= 19){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC >= 20 && GC <= 28){
+                            else if(GC > 19 && GC <= 28){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC >= 29 && GC <= 31){
+                            else if(GC > 28 && GC <= 31){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 31){
@@ -421,13 +461,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     } else if(tipoPacientePorEdad == "Adultos"){
                             /* if(GC < 17){
                                 tipoGC = "IDEAL";
-                            } else*/ if(GC >= 17 && GC <= 20){
+                            } else*/ if(GC <= 20){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC >= 21 && GC <= 29){
+                            else if(GC > 20 && GC <= 29){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC >= 30 && GC <= 32){
+                            else if(GC > 29 && GC <= 32){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 32){
@@ -436,13 +476,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     } else if(tipoPacientePorEdad == "Adultos mayores"){
                         /*if(GC < 19){
                                 tipoGC = "IDEAL";
-                            } else*/ if(GC >= 19 && GC <= 22){
+                            } else*/ if(GC <= 22){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC >= 18 && GC <= 24){
+                            else if(GC > 22 && GC <= 31){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC >= 32 && GC <= 34){
+                            else if(GC > 31 && GC <= 34){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 34){

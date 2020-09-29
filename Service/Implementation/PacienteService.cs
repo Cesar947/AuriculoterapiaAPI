@@ -41,8 +41,8 @@ namespace Auriculoterapia.Api.Service.Implementation
             try{
                 listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(14, 17, sexo, "Adolescentes"));
                 listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(18, 30, sexo, "Jóvenes"));
-                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(31, 31, sexo, "Adultos"));
-                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(31, 31, sexo, "Adultos mayores"));
+                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(31, 45, sexo, "Adultos"));
+                listaResponse.Add(PacienteRepository.retornarCantidadPacientesPorEdadObesidad(46, 60, sexo, "Adultos mayores"));
             } catch(Exception e){
                 throw;
             }

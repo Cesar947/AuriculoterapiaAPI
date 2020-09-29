@@ -13,13 +13,13 @@ namespace Auriculoterapia.Api.Repository
 
        Paciente buscarPorUsuarioId(int usuarioId);
 
-       int cantidadPacientesPorEdad(int min, int max, string tratamiento="");
+       List<Paciente> pacientesPorEdad(int min, int max, string tratamiento="", string sexo="");
 
        CantidadPacientesPorSexo retornarPacientesPorSexo();
 
        CantidadPacientePorEdad retornarPacientesPorEdad();
 
-       CantidadPacientesPorNivel retornarPacientesPorNivel();
+       CantidadPacientesPorNivel retornarPacientesPorNivel(string tratamiento);
 
        ResponsePacientesObesidad retornarCantidadPacientesPorEdadObesidad(int min, int max, string sexo, string tipoPacientePorEdad);
     }
