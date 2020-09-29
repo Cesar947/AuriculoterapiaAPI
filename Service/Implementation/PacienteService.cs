@@ -20,6 +20,10 @@ namespace Auriculoterapia.Api.Service.Implementation
             PacienteRepository.Save(entity);
         }
 
+        public PacienteResultsParameters findResultParametersByPacienteId(int id){
+            return this.PacienteRepository.findResultParametersByPacienteId(id);
+        }
+
         public IEnumerable<Paciente> FindAll(){
             return PacienteRepository.FindAll();
         }

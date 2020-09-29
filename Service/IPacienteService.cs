@@ -10,6 +10,8 @@ namespace Auriculoterapia.Api.Service
     {
         IEnumerable<Paciente> buscarPorPalabra(string palabra);
 
+        PacienteResultsParameters findResultParametersByPacienteId(int id);
+
         CantidadPacientesPorSexo retornarPacientesPorSexo();
 
         CantidadPacientePorEdad retornarPacientesPorEdad();

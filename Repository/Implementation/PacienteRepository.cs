@@ -71,11 +71,30 @@ namespace Auriculoterapia.Api.Repository.Implementation
         public Paciente FindById(int Id){
             var paciente = new Paciente();
             try{
-                paciente = this.context.Pacientes.Single(paciente => paciente.Id == Id);
+                paciente = this.context.Pacientes
+                .Include(p => p.Usuario)
+                .Single(paciente => paciente.Id == Id);
             }catch(System.Exception){
                 throw;
             }
             return paciente;
+        }
+
+        public PacienteResultsParameters findResultParametersByPacienteId(int Id){
+            var result = new PacienteResultsParameters();
+            try{
+                var paciente = this.context.Pacientes
+                .Include(p => p.Usuario)
+                .Single(p => p.Id == Id);
+
+                result.sexo = paciente.Usuario.Sexo;
+                result.edad = CalculoValores.calculoEdad(paciente.FechaNacimiento);
+
+                
+            }catch(System.Exception){
+                throw;
+            }
+            return result;
         }
 
 

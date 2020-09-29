@@ -46,11 +46,8 @@ namespace Auriculoterapia.Api
 
                  providerOptions => providerOptions.EnableRetryOnFailure());*/
 
-                 x.UseMySql(Configuration.GetConnectionString("DefaultConnection2"), 
-                 providerOptions => providerOptions.EnableRetryOnFailure());
-
                    
-                
+    
 
             });
 

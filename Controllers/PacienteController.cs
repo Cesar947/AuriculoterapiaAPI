@@ -81,6 +81,12 @@ namespace Controllers
         } 
 
         [AllowAnonymous]
+        [HttpGet("{id}")]
+        public PacienteResultsParameters findResultParametersByPacienteId([FromRoute] int id){
+            return this.PacienteService.findResultParametersByPacienteId(id);
+        }
+
+        [AllowAnonymous]
         [HttpGet("pacientesObesidad")]
         public List<ResponsePacientesObesidad> retornarResultadosPacientesObesidad([FromQuery] string sexo){
             return this.PacienteService.retornarCantidadPacientesPorEdadObesidad(sexo);

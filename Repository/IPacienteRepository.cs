@@ -15,6 +15,8 @@ namespace Auriculoterapia.Api.Repository
 
        List<Paciente> pacientesPorEdad(int min, int max, string tratamiento="", string sexo="");
 
+       PacienteResultsParameters findResultParametersByPacienteId(int Id);
+
        CantidadPacientesPorSexo retornarPacientesPorSexo();
 
        CantidadPacientePorEdad retornarPacientesPorEdad();
