@@ -54,10 +54,22 @@ namespace Auriculoterapia.Api.Repository.Implementation
         public void saveByUserId(SolicitudTratamiento entity,int userId){
             var user = context.Usuarios.Include(s => s.Paciente).FirstOrDefault(x =>x.Id == userId);
             
+            var peso = entity.Peso;
+            var stringPeso = peso.ToString();
+            var regex = new System.Text.RegularExpressions.Regex("(?<=[\\.])[0-9]+");
+            var decimalPesoString = "";
+            if(regex.IsMatch(stringPeso)){
+                decimalPesoString= regex.Match(stringPeso).Value;
+            }
+            var lenghtPeso = decimalPesoString.Length;
              try{
+                 if(lenghtPeso == 1){
                  entity.PacienteId = user.Paciente.Id;
                 this.context.Add(entity);
                 this.context.SaveChanges();
+                 }else{
+                     entity.Id =-1;
+                 }
             }catch(System.Exception){
                 throw;
             }            

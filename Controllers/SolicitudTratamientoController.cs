@@ -35,6 +35,10 @@ namespace Auriculoterapia.Api.Controllers
         public IActionResult Post([FromBody] SolicitudTratamiento solicitudTratamiento)
         {
             solicitudTratamientoService.Save(solicitudTratamiento);
+            if(solicitudTratamiento.Id == -1){
+                 return BadRequest(new {message = "El peso solo debe tener un decimal"}); 
+            }
+
             if(solicitudTratamiento.Id != 0)
                 return Ok(solicitudTratamiento); 
             else
@@ -46,6 +50,10 @@ namespace Auriculoterapia.Api.Controllers
         public IActionResult Post([FromBody] SolicitudTratamiento solicitudTratamiento, int id)
         {
             solicitudTratamientoService.saveByUserId(solicitudTratamiento,id);
+            if(solicitudTratamiento.Id == -1){
+                 return BadRequest(new {message = "El peso solo debe tener un decimal"}); 
+            }
+            
             if(solicitudTratamiento.Id != 0){
                 solicitudTratamiento.Paciente = null;
                 return Ok(solicitudTratamiento); 
