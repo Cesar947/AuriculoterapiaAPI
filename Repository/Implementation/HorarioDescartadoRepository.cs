@@ -50,6 +50,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 .FirstOrDefault(h => h.Disponibilidad.Id == dispAnt.Id && h.HoraInicio == horaInicio 
                 && h.HoraFin == horaFin);
 
+            if(dispAct != null){
                horarioDescartadoNuevo = this.context.HorariosDescartados
                 .FirstOrDefault(h => h.Disponibilidad.Id == dispAct.Id && h.HoraInicio == nuevaHoraInicio
                 && h.HoraFin == nuevaHoraFin);
@@ -73,6 +74,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     this.context.SaveChanges();
                     
                 }
+            } else {
+                this.context.HorariosDescartados.Remove(horarioDescartadoAntiguo);
+                this.context.SaveChanges();
+            }
                 
 
             } catch(System.Exception){

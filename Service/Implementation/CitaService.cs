@@ -118,7 +118,7 @@ namespace Auriculoterapia.Api.Service.Implementation
                     disponibilidad = new Disponibilidad();
                     disponibilidad.Dia = cita.Fecha;
                     disponibilidad.HoraInicio = conversor.TransformarAHora("07:00", entity.Fecha);
-                    disponibilidad.HoraFin = conversor.TransformarAHora("19:00", entity.Fecha);
+                    disponibilidad.HoraFin = conversor.TransformarAHora("18:00", entity.Fecha);
                     disponibilidad.EspecialistaId = 1;
                     disponibilidad.Especialista = this.especialistaRepository.FindById(disponibilidad.EspecialistaId);
                     var disInserted = this.disponibilidadRepository.guardarDisponibilidad(disponibilidad); 
@@ -157,12 +157,33 @@ namespace Auriculoterapia.Api.Service.Implementation
                 disponibilidadAnterior = disponibilidadRepository.listarPorFecha(cita.Fecha.ToString("yyyy-MM-dd"));
 
                 disponibilidadActual = disponibilidadRepository.listarPorFecha(form.Fecha);
-                
-                if (disponibilidadAnterior != null && disponibilidadActual != null){
-                  this.horarioDescartadoRepository.actualizarHorarioDescartado(horaInicioAnterior, horaFinAnterior,
-                   horaInicioActual, horaFinActual, disponibilidadAnterior, disponibilidadActual);
-               
 
+                var horarioDescartado = new HorarioDescartado();
+                horarioDescartado.HoraInicio = horaInicioActual;
+                horarioDescartado.HoraFin = horaFinActual;
+
+                
+                if (disponibilidadAnterior != null){
+                    if(disponibilidadActual == null){
+
+                        disponibilidadActual = new Disponibilidad();
+                        disponibilidadActual.Dia = conversor.TransformarAFecha(form.Fecha);
+                        disponibilidadActual.HoraInicio = conversor.TransformarAHora("07:00", form.Fecha);
+                        disponibilidadActual.HoraFin = conversor.TransformarAHora("18:00", form.Fecha);
+                        disponibilidadActual.EspecialistaId = 1;
+                        disponibilidadActual.Especialista = this.especialistaRepository.FindById(disponibilidadActual.EspecialistaId);
+                        var disInserted = this.disponibilidadRepository.guardarDisponibilidad(disponibilidadActual); 
+
+                        horarioDescartado.DisponibilidadId = disInserted.Id;
+                        horarioDescartado.Disponibilidad = disInserted;
+                        
+                        this.horarioDescartadoRepository.Save(horarioDescartado);
+
+                    }
+              
+               
+                 this.horarioDescartadoRepository.actualizarHorarioDescartado(horaInicioAnterior, horaFinAnterior,
+                             horaInicioActual, horaFinActual, disponibilidadAnterior, disponibilidadActual);
                 var tipoAtencion = tipoAtencionRepository.FindByDescription(form.TipoAtencion);
                 PacienteRepository.ActualizarNumeroPaciente(form.Celular, cita.Paciente);
                 cita.Fecha = conversor.TransformarAFecha(form.Fecha);
