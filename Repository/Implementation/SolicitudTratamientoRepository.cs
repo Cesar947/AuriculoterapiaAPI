@@ -63,7 +63,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }
             var lenghtPeso = decimalPesoString.Length;
              try{
-                 if(lenghtPeso == 1){
+                 if(lenghtPeso <= 1){
                  entity.PacienteId = user.Paciente.Id;
                 this.context.Add(entity);
                 this.context.SaveChanges();
