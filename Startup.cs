@@ -39,12 +39,17 @@ namespace Auriculoterapia.Api
             services.AddDbContext<ApplicationDbContext>(x => {
 
 
+<<<<<<< HEAD
                x.UseMySql(Configuration.GetConnectionString("DefaultConnection3"), 
                  providerOptions => providerOptions.EnableRetryOnFailure());
-
-                 /*x.UseMySql(Configuration.GetConnectionString("DefaultConnection2"), 
-
+=======
+               /*x.UseMySql(Configuration.GetConnectionString("DefaultConnection"), 
                  providerOptions => providerOptions.EnableRetryOnFailure());*/
+>>>>>>> braulio
+
+                 x.UseMySql(Configuration.GetConnectionString("DefaultConnection2"), 
+
+                 providerOptions => providerOptions.EnableRetryOnFailure());
 
                    
     
