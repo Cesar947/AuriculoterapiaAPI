@@ -420,10 +420,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                            if(GC <= 13){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC > 13 && GC <= 20){
+                            else if(GC >= 14 && GC <= 20){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC > 20 && GC <= 23){
+                            else if(GC >= 21 && GC <= 23){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 23){
@@ -435,10 +435,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             } else*/ if(GC <= 14){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC > 14 && GC <= 21){
+                            else if(GC >= 15 && GC <= 21){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC > 21 && GC <= 24){
+                            else if(GC >= 22 && GC <= 24){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 24){
@@ -450,10 +450,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             } else*/ if(GC <= 17){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC > 17 && GC <= 24){
+                            else if(GC >= 18 && GC <= 24){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC > 24 && GC <= 27){
+                            else if(GC >= 25 && GC <= 27){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 27){
@@ -468,10 +468,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             } else*/ if(GC <= 19){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC > 19 && GC <= 28){
+                            else if(GC >= 20 && GC <= 28){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC > 28 && GC <= 31){
+                            else if(GC >= 29 && GC <= 31){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 31){
@@ -483,10 +483,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             } else*/ if(GC <= 20){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC > 20 && GC <= 29){
+                            else if(GC >= 21 && GC <= 29){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC > 29 && GC <= 32){
+                            else if(GC >= 30 && GC <= 32){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 32){
@@ -498,10 +498,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                             } else*/ if(GC <= 22){
                                 tipoGC = "BUENA";
                             }
-                            else if(GC > 22 && GC <= 31){
+                            else if(GC >= 23 && GC <= 31){
                                 tipoGC = "NORMAL";
                             }
-                            else if(GC > 31 && GC <= 34){
+                            else if(GC >= 32 && GC <= 34){
                                 tipoGC = "ELEVADA";
                             }
                             else if(GC > 34){

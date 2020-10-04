@@ -6,7 +6,8 @@ namespace Auriculoterapia.Api.Helpers
     {
        public static double calculoIMC(float altura, float peso){
            double IMC = peso/(altura*altura);
-           return IMC;
+           double IMCRedondeado = Math.Round(IMC*100f)/100f;
+           return IMCRedondeado;
        }
 
        public static double calculoGC(double IMC, int edad, string sexo){
@@ -16,7 +17,9 @@ namespace Auriculoterapia.Api.Helpers
             }else{
                 grasaCorporal = 1.2*IMC+(0.23*edad)-(10.8*0)-5.4;
             }
-            return grasaCorporal;
+            double grasaRedondeada =  Math.Round(grasaCorporal);
+
+            return grasaRedondeada;
        }
 
        public static int calculoEdad(DateTime birth){
