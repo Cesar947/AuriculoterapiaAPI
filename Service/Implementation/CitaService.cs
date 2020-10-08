@@ -256,7 +256,15 @@ namespace Auriculoterapia.Api.Service.Implementation
                     }
 
                     var notificacion = new Notificacion();
-                    //notificacion.EmisorId
+                    if(usuarioId == 1){
+                        notificacion.EmisorId = usuarioId;
+                        notificacion.ReceptorId = cita.Paciente.UsuarioId;
+                    }else{
+                        notificacion.EmisorId = usuarioId;
+                        notificacion.ReceptorId = 1;
+                    }
+                    notificacion.TipoNotificacion = "CANCELARCITA";
+                    notificacionRepository.Save(notificacion);
 
                 }
               
