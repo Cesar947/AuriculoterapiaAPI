@@ -19,6 +19,7 @@ namespace Auriculoterapia.Api.Repository.Context
         public DbSet<Disponibilidad> Disponibilidades {get; set;}
         public DbSet<HorarioDescartado> HorariosDescartados {get; set;}
         public DbSet<Evolucion> Evoluciones {get;set;}
+        public DbSet<Notificacion> Notificaciones {get; set;}
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
         : base(options) {}

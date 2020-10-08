@@ -3,14 +3,16 @@ using System;
 using Auriculoterapia.Api.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Auriculoterapia.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201008035442_Notificaciones")]
+    partial class Notificaciones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,11 +180,17 @@ namespace Auriculoterapia.Api.Migrations
                     b.Property<string>("Titulo")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int?>("UsuarioEmisorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UsuarioReceptorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EmisorId");
+                    b.HasIndex("UsuarioEmisorId");
 
-                    b.HasIndex("ReceptorId");
+                    b.HasIndex("UsuarioReceptorId");
 
                     b.ToTable("Notificaciones");
                 });
@@ -430,17 +438,13 @@ namespace Auriculoterapia.Api.Migrations
 
             modelBuilder.Entity("Auriculoterapia.Api.Domain.Notificacion", b =>
                 {
-                    b.HasOne("Auriculoterapia.Api.Domain.Usuario", "Emisor")
+                    b.HasOne("Auriculoterapia.Api.Domain.Usuario", "UsuarioEmisor")
                         .WithMany()
-                        .HasForeignKey("EmisorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioEmisorId");
 
-                    b.HasOne("Auriculoterapia.Api.Domain.Usuario", "Receptor")
+                    b.HasOne("Auriculoterapia.Api.Domain.Usuario", "UsuarioReceptor")
                         .WithMany()
-                        .HasForeignKey("ReceptorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioReceptorId");
                 });
 
             modelBuilder.Entity("Auriculoterapia.Api.Domain.Paciente", b =>
