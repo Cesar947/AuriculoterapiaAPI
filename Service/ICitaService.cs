@@ -10,7 +10,7 @@ namespace Auriculoterapia.Api.Service
         void RegistrarCitaPaciente(FormularioCitaPaciente entity, int PacienteId);
         IEnumerable<Cita> listarCitasPorUsuarioId(int usuarioId);
 
-        bool actualizarEstadoCita(int citaId, string estado);
+        bool actualizarEstadoCita(int citaId, string estado, int usuarioId);
 
         void procesarHorariosDescartados(Cita cita, FormularioCita fs=null, FormularioCitaPaciente fp=null);
     

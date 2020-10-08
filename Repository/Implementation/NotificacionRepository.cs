@@ -42,9 +42,8 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
                 DateTime today= currentDateTime.Date;
                 DateTime hour = currentDateTime;
-                
-        
-                entity.FechaNotificación = today;
+
+                entity.FechaNotificacion = today;
                 entity.HoraNotificacion = hour;
                 
                 entity.Titulo = nombreCompleto;
@@ -89,6 +88,15 @@ namespace Auriculoterapia.Api.Repository.Implementation
             
         }
 
+        public int numeroDeNotificacionesPorReceptorId(int id){
+            var count = 0;
+            try{
+                count = this.context.Notificaciones.Where(n => n.ReceptorId == id && n.Deshabilitado == false).Count();
+            } catch(Exception e){
+                throw;
+            }
+            return count;
+        }
 
 
         private string getDescripcion(string TipoNotificacion){

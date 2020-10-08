@@ -19,7 +19,7 @@ namespace Auriculoterapia.Api.Domain
         public virtual Usuario Emisor {get;set;}
         public string TipoNotificacion {get;set;}
         public bool Deshabilitado {get; set;}
-        public DateTime FechaNotificación {get; set;}
+        public DateTime FechaNotificacion {get; set;}
         public DateTime HoraNotificacion {get; set;}
         public string Titulo {get;set;}
         public string Descripcion {get;set;}

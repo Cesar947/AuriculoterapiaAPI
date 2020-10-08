@@ -51,8 +51,8 @@ namespace Auriculoterapia.Api.Controllers
         }
 
         [HttpPut("estado")]
-        public bool actualizarEstadoCita([FromQuery] int citaId, [FromQuery] string estado){
-            return CitaService.actualizarEstadoCita(citaId, estado);
+        public bool actualizarEstadoCita([FromQuery] int citaId, [FromQuery] string estado, [FromQuery] int usuarioId){
+            return CitaService.actualizarEstadoCita(citaId, estado, usuarioId);
         }
 
         [HttpGet("{id}")]

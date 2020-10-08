@@ -42,5 +42,10 @@ namespace Auriculoterapia.Api.Controllers
                 return Ok(estadoNotificacion);
             }
         }
+
+        [HttpGet("{receptorId}/cantidad")]
+        public int numeroNotificacionesPorReceptorId(int receptorId){
+            return 0;
+        }
     }
 }

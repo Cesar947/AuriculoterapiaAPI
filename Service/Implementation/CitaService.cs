@@ -220,7 +220,7 @@ namespace Auriculoterapia.Api.Service.Implementation
         public IEnumerable<Cita> listarCitasPorUsuarioId(int usuarioId){
             return CitaRepository.listarCitasPorUsuarioId(usuarioId);
         }
-        public bool actualizarEstadoCita(int citaId, string estado){
+        public bool actualizarEstadoCita(int citaId, string estado, int usuarioId){
             var disponibilidad = new Disponibilidad();
             var horarioBorrado = false;
             var cita = new Cita();
