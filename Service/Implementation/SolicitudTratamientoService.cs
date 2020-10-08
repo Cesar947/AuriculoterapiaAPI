@@ -9,9 +9,13 @@ namespace Auriculoterapia.Api.Service.Implementation
     {
 
         private ISolicitudTratamientoRepository solicitudTratamientoRepository;
-        public SolicitudTratamientoService(ISolicitudTratamientoRepository solicitudTratamientoRepository)
+
+        private INotificacionRepository notificacionRepository;
+        public SolicitudTratamientoService(ISolicitudTratamientoRepository solicitudTratamientoRepository,
+        INotificacionRepository notificacionRepository)
         {
             this.solicitudTratamientoRepository = solicitudTratamientoRepository;
+            this.notificacionRepository = notificacionRepository;
         }
 
         public IEnumerable<SolicitudTratamiento> FindAll()
@@ -33,6 +37,17 @@ namespace Auriculoterapia.Api.Service.Implementation
 
         public void saveByUserId(SolicitudTratamiento entity, int userId) {
             solicitudTratamientoRepository.saveByUserId(entity, userId);
+           
+
+            if(entity.Id>0){
+                var notificacion = new Notificacion();
+
+                notificacion.EmisorId = userId;
+                notificacion.ReceptorId = 1;
+                notificacion.TipoNotificacion = "NUEVOTRATAMIENTO";
+
+                notificacionRepository.Save(notificacion);
+            }
         }
 
         public string obtenerImagenPorSolicitud(int solicitudId)
