@@ -10,11 +10,15 @@ namespace Auriculoterapia.Api.Service.Implementation
 
         private ITratamientoRepository tratamientoRepository;
         private ISolicitudTratamientoRepository solicitudTratamientoRepository;
+        private INotificacionRepository notificacionRepository;
+
 
         public TratamientoService(ITratamientoRepository tratamientoRepository,
-        ISolicitudTratamientoRepository solicitudTratamientoRepository){
+        ISolicitudTratamientoRepository solicitudTratamientoRepository,
+        INotificacionRepository notificacionRepository){
             this.tratamientoRepository = tratamientoRepository;
             this.solicitudTratamientoRepository = solicitudTratamientoRepository;
+            this.notificacionRepository = notificacionRepository;
         }
 
         public IEnumerable<Tratamiento> FindAll()
@@ -47,6 +51,14 @@ namespace Auriculoterapia.Api.Service.Implementation
                 
                 tratamientoRepository.Save(nuevoTratamiento);                       
                 registroExitoso = true;
+                if(registroExitoso){
+                    var notificacion = new Notificacion();
+                    notificacion.EmisorId = 1;
+                    notificacion.ReceptorId = solicitudAResponder.Paciente.UsuarioId;
+                    notificacion.TipoNotificacion = "RESPONDERTRATAMIENTO";
+                    notificacionRepository.Save(notificacion);  
+                }
+                
 
             }catch(System.Exception){
                 throw;

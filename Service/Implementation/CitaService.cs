@@ -15,18 +15,21 @@ namespace Auriculoterapia.Api.Service.Implementation
         private readonly IEspecialistaRepository especialistaRepository;
         private readonly IDisponibilidadRepository disponibilidadRepository;
         private IHorarioDescartadoRepository horarioDescartadoRepository;
+
+        private INotificacionRepository notificacionRepository;
+
     
 
         public CitaService(ICitaRepository CitaRepository, IPacienteRepository PacienteRepository, ITipoAtencionRepository tipoAtencionRepository,
         IDisponibilidadRepository disponibilidadRepository, IHorarioDescartadoRepository horarioDescartadoRepository,
-        IEspecialistaRepository especialistaRepository){
+        IEspecialistaRepository especialistaRepository,INotificacionRepository notificacionRepository){
             this.CitaRepository = CitaRepository;
             this.PacienteRepository = PacienteRepository;
             this.tipoAtencionRepository = tipoAtencionRepository;
             this.disponibilidadRepository = disponibilidadRepository;
             this.horarioDescartadoRepository = horarioDescartadoRepository;
             this.especialistaRepository = especialistaRepository;
-      
+            this.notificacionRepository = notificacionRepository;
         }
 
         public void Save(Cita entity){
@@ -76,6 +79,13 @@ namespace Auriculoterapia.Api.Service.Implementation
                     }
 
                     this.horarioDescartadoRepository.Save(horarioDescartado);
+
+                    var notificacion = new Notificacion();
+                    notificacion.EmisorId = 1;
+                    notificacion.ReceptorId = paciente.UsuarioId;
+                    notificacion.TipoNotificacion = "NUEVACITA";
+
+                    notificacionRepository.Save(notificacion);
 
                 }catch(System.Exception){
 
@@ -128,7 +138,13 @@ namespace Auriculoterapia.Api.Service.Implementation
                 }
 
                 this.horarioDescartadoRepository.Save(horarioDescartado);
-                
+
+                var notificacion = new Notificacion();
+                notificacion.EmisorId =paciente.UsuarioId;
+                notificacion.ReceptorId = 1;
+                notificacion.TipoNotificacion ="NUEVACITA";
+
+                notificacionRepository.Save(notificacion);
 
             }catch(System.Exception){
 
@@ -196,6 +212,13 @@ namespace Auriculoterapia.Api.Service.Implementation
                 citaActualizada = this.CitaRepository.actualizarCita(cita, id);   
                 }
 
+                var notificacion = new Notificacion();
+                notificacion.EmisorId = cita.Paciente.UsuarioId;
+                notificacion.ReceptorId = 1;
+                notificacion.TipoNotificacion = "MODIFICARCITA";
+
+                notificacionRepository.Save(notificacion);
+
             } catch(System.Exception){
                 throw;
             }
@@ -231,6 +254,9 @@ namespace Auriculoterapia.Api.Service.Implementation
                     if(disponibilidad != null){
                     horarioBorrado = this.horarioDescartadoRepository.borrarPorDisponibilidadHoraInicio(cita.HoraInicioAtencion, disponibilidad);
                     }
+
+                    var notificacion = new Notificacion();
+                    //notificacion.EmisorId
 
                 }
               

@@ -32,7 +32,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
         {
             var solicitud = new SolicitudTratamiento();
             try{
-                solicitud = this.context.SolicitudTratamientos.Single(s => s.Id == id);
+                solicitud = this.context.SolicitudTratamientos.Include(p => p.Paciente).Single(s => s.Id == id);
 
             } catch(System.Exception){
                 throw;
