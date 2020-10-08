@@ -27,6 +27,13 @@ namespace Auriculoterapia.Api.Repository.Implementation
         public void Save(Notificacion entity)
         {
             try{
+
+                var usuarioEmisor = this.context.Usuarios.FirstOrDefault(u => u.Id == entity.EmisorId);
+
+                var nombreCompleto = $"{usuarioEmisor.Nombre} {usuarioEmisor.Apellido}";
+
+                Console.WriteLine($"Título: {nombreCompleto}");
+
                 entity.Deshabilitado = false;
                 //DateTime today = DateTime.Today;
                 //DateTime hour = DateTime.Now;
@@ -35,10 +42,12 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
                 DateTime today= currentDateTime.Date;
                 DateTime hour = currentDateTime;
-
+                
+        
                 entity.FechaNotificación = today;
                 entity.HoraNotificacion = hour;
-
+                
+                entity.Titulo = nombreCompleto;
                 entity.Descripcion = getDescripcion(entity.TipoNotificacion);
                 context.Notificaciones.Add(entity);
                 context.SaveChanges();
