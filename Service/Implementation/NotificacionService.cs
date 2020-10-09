@@ -29,5 +29,13 @@ namespace Auriculoterapia.Api.Service.Implementation
         public bool modificarDeshabilitar(int id){
             return NotificacionRepository.modificarDeshabilitar(id);
         }
+
+        public int numeroDeNotificacionesPorReceptorId(int id){
+            return NotificacionRepository.numeroDeNotificacionesPorReceptorId(id);
+        }
+
+        public bool leerNotificacionesPorReceptorId(int receptorId){
+            return NotificacionRepository.leerNotificacionesPorReceptorId(receptorId);
+        }
     }
 }

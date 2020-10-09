@@ -23,7 +23,7 @@ namespace Auriculoterapia.Api.Domain
         public DateTime HoraNotificacion {get; set;}
         public string Titulo {get;set;}
         public string Descripcion {get;set;}
-
+        public bool Leido {get; set;}
     
    }
 }

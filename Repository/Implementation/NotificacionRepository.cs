@@ -35,6 +35,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 Console.WriteLine($"Título: {nombreCompleto}");
 
                 entity.Deshabilitado = false;
+                entity.Leido = false;
                 //DateTime today = DateTime.Today;
                 //DateTime hour = DateTime.Now;
                 var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
@@ -45,6 +46,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
 
                 entity.FechaNotificacion = today;
                 entity.HoraNotificacion = hour;
+                
                 
                 entity.Titulo = nombreCompleto;
                 entity.Descripcion = getDescripcion(entity.TipoNotificacion);
@@ -91,11 +93,30 @@ namespace Auriculoterapia.Api.Repository.Implementation
         public int numeroDeNotificacionesPorReceptorId(int id){
             var count = 0;
             try{
-                count = this.context.Notificaciones.Where(n => n.ReceptorId == id && n.Deshabilitado == false).Count();
+                count = this.context.Notificaciones.Where(n => n.ReceptorId == id
+                 && n.Deshabilitado == false 
+                 && n.Leido == false).Count();
             } catch(Exception e){
                 throw;
             }
             return count;
+        }
+
+        public bool leerNotificacionesPorReceptorId(int receptorId){
+            var leidos = false;
+            try{
+                var notificaciones = this.context.Notificaciones.Where(n => n.ReceptorId == receptorId
+                && n.Leido == false && n.Deshabilitado == false);
+
+                foreach(var n in notificaciones){
+                    n.Leido = true;
+                }
+                leidos = true;
+                this.context.SaveChanges();
+            } catch(Exception e){
+                throw;
+            }
+            return leidos;
         }
 
 

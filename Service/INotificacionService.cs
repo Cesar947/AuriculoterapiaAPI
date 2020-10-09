@@ -9,5 +9,9 @@ namespace Auriculoterapia.Api.Service
         IEnumerable<Notificacion> getNotificacionByReceptorId(int receptorId);
 
          bool modificarDeshabilitar(int id);
+
+         int numeroDeNotificacionesPorReceptorId(int id);
+
+         bool leerNotificacionesPorReceptorId(int receptorId);
     }
 }

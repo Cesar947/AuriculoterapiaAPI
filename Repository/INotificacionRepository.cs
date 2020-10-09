@@ -10,6 +10,8 @@ namespace Auriculoterapia.Api.Repository
         bool modificarDeshabilitar(int id);
 
         int numeroDeNotificacionesPorReceptorId(int id);
+
+        bool leerNotificacionesPorReceptorId(int receptorId);
          
     }
 }
