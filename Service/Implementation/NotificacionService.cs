@@ -37,5 +37,6 @@ namespace Auriculoterapia.Api.Service.Implementation
         public bool leerNotificacionesPorReceptorId(int receptorId){
             return NotificacionRepository.leerNotificacionesPorReceptorId(receptorId);
         }
+
     }
 }

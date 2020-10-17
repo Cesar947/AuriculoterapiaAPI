@@ -58,13 +58,51 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }
         }
 
+        public void saveNotificacion(Notificacion entity,string TipoTratamiento){
+             try{
+
+                var usuarioEmisor = this.context.Usuarios.FirstOrDefault(u => u.Id == entity.EmisorId);
+
+                var nombreCompleto = $"{usuarioEmisor.Nombre} {usuarioEmisor.Apellido}";
+
+                Console.WriteLine($"Título: {nombreCompleto}");
+
+                entity.Deshabilitado = false;
+                entity.Leido = false;
+                //DateTime today = DateTime.Today;
+                //DateTime hour = DateTime.Now;
+                var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+                var currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,myTimeZone);
+
+                DateTime today= currentDateTime.Date;
+                DateTime hour = currentDateTime;
+
+                entity.FechaNotificacion = today;
+                entity.HoraNotificacion = hour;
+                
+                
+                entity.Titulo = nombreCompleto;
+                entity.Descripcion = getDescripcion(entity.TipoNotificacion);
+
+                if(TipoTratamiento != null && entity.TipoNotificacion == "REGISTRARFORMULARIOEVOLUCION"){
+                    entity.Descripcion = $"{entity.Descripcion} para {TipoTratamiento}";
+                }
+
+                context.Notificaciones.Add(entity);
+                context.SaveChanges();
+
+            }catch(System.Exception){
+                throw;
+            }
+        }
+
 
         public  IEnumerable<Notificacion> getNotificacionByReceptorId(int receptorId){
             var notificaciones = new List<Notificacion>();
             try{
                 notificaciones = context.Notificaciones
                 .Where(x => x.ReceptorId == receptorId && 
-                x.Deshabilitado == false).ToList();
+                x.Deshabilitado == false).OrderByDescending(n => n.Id).ToList();
             }catch(System.Exception)
             {
                 throw;
@@ -149,10 +187,15 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     descripcion = "Acaba de cancelar la solicitud de tratamiento";
                 break;
 
+                case "REGISTRARFORMULARIOEVOLUCION":
+                    descripcion = "Acaba de registrar el formulario de evolución";
+                break;
+
             }
 
             
             return descripcion;
         }
+
     }
 }

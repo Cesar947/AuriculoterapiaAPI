@@ -13,5 +13,6 @@ namespace Auriculoterapia.Api.Service
          int numeroDeNotificacionesPorReceptorId(int id);
 
          bool leerNotificacionesPorReceptorId(int receptorId);
+
     }
 }
