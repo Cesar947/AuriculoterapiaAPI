@@ -60,7 +60,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
                     float altura = lista.Tratamiento.SolicitudTratamiento.Altura;
                     double IMC = lista.Peso/(altura*altura);
                     var sexo = lista.Tratamiento.SolicitudTratamiento.Paciente.Usuario.Sexo;
-
+                    var otros = lista.Otros;
 
                     DateTime birth = DateTime.Parse(lista.Tratamiento.SolicitudTratamiento.Paciente.FechaNacimiento.ToString());
                     DateTime today = DateTime.Today;
@@ -79,8 +79,12 @@ namespace Auriculoterapia.Api.Repository.Implementation
                         grasaCorporal = 1.2*IMC+(0.23*edad)-(10.8*0)-5.4;
                     }
 
+                    if(otros == ""){
+                        otros = "No presentó otros síntomas";
+                    }
+
                     var newResponse = new ResponseResultsPatient(lista.EvolucionNumero,lista.Peso,lista.Sesion,
-                    lista.TipoTratamiento,lista.TratamientoId,Math.Round(IMC,1),Math.Round(grasaCorporal,1));
+                    lista.TipoTratamiento,lista.TratamientoId,Math.Round(IMC,1),Math.Round(grasaCorporal,1),otros);
 
                     listaResponseResultsPatient.Add(newResponse);
                 }

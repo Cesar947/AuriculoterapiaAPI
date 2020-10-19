@@ -12,7 +12,9 @@ namespace AuriculoterapiaAPI.Helpers
 
         public double grasaCorporal{get;set;}
 
-        public ResponseResultsPatient(int EvolucionNumero,float Peso, int Sesion,string TipoTratamiento,int TratamientoId, double Imc, double grasaCorporal ){
+        public string Otros {get;set;}
+
+        public ResponseResultsPatient(int EvolucionNumero,float Peso, int Sesion,string TipoTratamiento,int TratamientoId, double Imc, double grasaCorporal, string Otros ){
             this.EvolucionNumero = EvolucionNumero;
             this.Peso = Peso;
             this.Sesion = Sesion;
@@ -20,6 +22,7 @@ namespace AuriculoterapiaAPI.Helpers
             this.TratamientoId = TratamientoId;
             this.Imc = Imc;
             this.grasaCorporal = grasaCorporal;
+            this.Otros = Otros;
         }
 
     }
