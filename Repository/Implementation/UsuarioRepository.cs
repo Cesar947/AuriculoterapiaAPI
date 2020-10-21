@@ -262,6 +262,38 @@ namespace Auriculoterapia.Api.Repository.Implementation
             return keyWord;
         }
 
+        public ResponseActualizarFoto Actualizar_Foto(int idUser,string foto){
+            var usuario = context.Usuarios.Include(p => p.Paciente).
+                Include(e => e.Especialista).FirstOrDefault(x => x.Id == idUser);
+
+            ResponseActualizarFoto Photo;
+
+            if(usuario != null){
+                string fotoWithTransformation = foto.Replace("upload/","upload/w_400,h_400,c_crop,g_face,r_max/w_200/");
+                usuario.Foto = fotoWithTransformation;
+                context.SaveChanges();
+                Photo = new ResponseActualizarFoto(usuario.Id,usuario.Foto);
+            }else{
+                Photo = null;
+            }
+
+            return Photo;
+        }
+
+        public ResponseActualizarFoto Buscar_Foto(int idUser){
+             var usuario = context.Usuarios.Include(p => p.Paciente).
+                Include(e => e.Especialista).FirstOrDefault(x => x.Id == idUser);
+
+            ResponseActualizarFoto Photo;
+
+            if(usuario != null){
+                Photo = new ResponseActualizarFoto(usuario.Id,usuario.Foto);
+            }else{
+                Photo = null;
+            }
+            return Photo;
+        }
+
         public bool IsValidEmail(string email){
             if(string.IsNullOrWhiteSpace(email))
                 return false;
