@@ -96,38 +96,11 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                     string horaCitaEmail = cita.HoraInicioAtencion.ToString();
                     //string nombreEspecialistaEmail = disponibilidad.Especialista.Usuario.Nombre + " "+disponibilidad.Especialista.Usuario.Apellido;
-                    string textBody = "El especialista Paul Alejos registró una nueva cita para la siguiente fecha: " + horaCitaEmail;
+                    string textBody = "El especialista Samuel Chung registró una nueva cita para la siguiente fecha: " + horaCitaEmail;
 
                     correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
 
-                   /* MimeMessage message = new MimeMessage();
-                    MailboxAddress from = new MailboxAddress("AuriculoterapiaApp","auriculoterapiaapp@gmail.com");
-                    message.From.Add(from);
-
-                    //MailboxAddress to = new MailboxAddress("User","pruebasmndrd@gmail.com");
-                    string emailUserTo = cita.Paciente.Usuario.Email;
-                    MailboxAddress to = new MailboxAddress("User",emailUserTo);
-                    message.To.Add(to);
-
-                    message.Subject = "Nueva Cita";
-
-                    BodyBuilder bodyBuilder = new BodyBuilder();
-                    //bodyBuilder.TextBody = "El especialista registro una nueva cita ";
-
-                    string horaCitaEmail = cita.HoraInicioAtencion.ToString();
-                    string nombreEspecialistaEmail = disponibilidad.Especialista.Usuario.Nombre + " "+disponibilidad.Especialista.Usuario.Apellido;
-                    bodyBuilder.TextBody = "El especialista "+nombreEspecialistaEmail + " registró una nueva cita para la siguiente fecha:" + horaCitaEmail;
-                    message.Body = bodyBuilder.ToMessageBody();
-
-                    SmtpClient client = new SmtpClient();
-                    client.Connect("smtp.gmail.com",587,false);
-                    client.Authenticate("auriculoterapiaapp@gmail.com","TPAuriculoterapia123");
-
-                    client.Send(message);
-                    client.Disconnect(true);
-                    client.Dispose();*/
-
-                    
+                                       
 
                 }catch(System.Exception){
 
@@ -346,7 +319,7 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                         string horaCitaEmail = cita.HoraInicioAtencion.ToString();
                     
-                        string textBody = "El especialista Paul Alejos canceló la cita para la siguiente fecha: " + horaCitaEmail;
+                        string textBody = "El especialista Samuel Chung canceló la cita para la siguiente fecha: " + horaCitaEmail;
 
                         correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
 
