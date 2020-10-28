@@ -22,6 +22,8 @@ namespace Auriculoterapia.Api.Domain
         //public int EspecialistaId {get; set;}
         [JsonIgnore]
         public Especialista Especialista {get; set;}
+
+        public string Foto {get;set;}
         
     }
 }

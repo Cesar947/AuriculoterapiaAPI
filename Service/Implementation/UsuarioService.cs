@@ -44,6 +44,13 @@ namespace Auriculoterapia.Api.Service.Implementation
             return UsuarioRepository.Actualizar_KeyWord(idUser,palabraClave,nuevaPalabraClave);
         }
 
+        public ResponseActualizarFoto Actualizar_Foto(int idUser,string foto){
+            return UsuarioRepository.Actualizar_Foto(idUser,foto);
+        }
+
+        public ResponseActualizarFoto Buscar_Foto(int idUser){
+            return UsuarioRepository.Buscar_Foto(idUser);
+        }
         
     }   
 }

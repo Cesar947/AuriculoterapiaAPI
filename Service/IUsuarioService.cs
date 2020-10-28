@@ -13,7 +13,10 @@ namespace Auriculoterapia.Api.Service
         ResponseUsuarioById BuscarPorId(int userId);
 
         ResponseActualizarKeyWord Actualizar_KeyWord(int idUser,string palabraClave,string nuevaPalabraClave);
+
+        ResponseActualizarFoto Actualizar_Foto(int idUser,string foto);
    
+        ResponseActualizarFoto Buscar_Foto(int idUser);
       
     }
 }

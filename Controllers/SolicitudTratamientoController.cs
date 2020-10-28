@@ -45,7 +45,7 @@ namespace Auriculoterapia.Api.Controllers
                 return BadRequest(new {message = "error en el registro, vuelva a intentar"}); 
         }
 
-        [Authorize(Roles = "PACIENTE")]
+        [Authorize(Roles = "PACIENTE,ESPECIALISTA")]
         [HttpPost("{id}")]
         public IActionResult Post([FromBody] SolicitudTratamiento solicitudTratamiento, int id)
         {

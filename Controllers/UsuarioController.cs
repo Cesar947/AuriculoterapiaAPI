@@ -128,6 +128,33 @@ namespace Auriculoterapia.Api.Controllers
             }           
 
         }
+
+        [AllowAnonymous]
+        [HttpPost("actualizarfoto")]
+        public IActionResult ActualizarFoto([FromBody] ResponseActualizarFoto response)
+        {
+            var user = usuarioService.Actualizar_Foto(response.Id,response.Foto);
+
+            if(user == null){
+                return BadRequest(new {message = "No se pudo actualizar la foto"});
+            }else{
+                return Ok(user);
+            }   
+        }
+
+        [AllowAnonymous]
+        [HttpGet("foto/{id}")]
+        public IActionResult BuscarFotoPorUserId(int id)
+        {
+            var user = usuarioService.Buscar_Foto(id);
+
+            if(user == null){
+                return BadRequest(new {message = "Hubo un problema, por favor inténtelo nuevamente"});
+            }else{
+                return Ok(user);
+            }           
+
+        }
         
     }
 }

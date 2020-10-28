@@ -39,7 +39,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
         public Cita FindById(int id){
             var cita = new Cita();
             try{
-                cita = this.context.Citas.Include(c => c.Paciente)
+                cita = this.context.Citas.Include(c => c.Paciente).Include(u => u.Paciente.Usuario)
                         .FirstOrDefault(c => c.Id == id);
 
             } catch(System.Exception){
