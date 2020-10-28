@@ -3,6 +3,8 @@ using Auriculoterapia.Api.Repository;
 using System.Collections.Generic;
 using Auriculoterapia.Api.Helpers;
 using System;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace Auriculoterapia.Api.Service.Implementation
 {
@@ -39,6 +41,7 @@ namespace Auriculoterapia.Api.Service.Implementation
         public void RegistrarCita(FormularioCita entity, int PacienteId){
             var cita = new Cita();
             var conversor = new ConversorDeFechaYHora(); 
+            var correo = new SendEmail();
              var disponibilidad = new Disponibilidad();
                 try {
                     var tipoAtencion = tipoAtencionRepository.FindByDescription(entity.TipoAtencion);
@@ -87,6 +90,45 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                     notificacionRepository.Save(notificacion);
 
+                    string emailUserTo = cita.Paciente.Usuario.Email;
+                    string subject = "Nueva cita";
+                    string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+
+                    string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+                    //string nombreEspecialistaEmail = disponibilidad.Especialista.Usuario.Nombre + " "+disponibilidad.Especialista.Usuario.Apellido;
+                    string textBody = "El especialista Paul Alejos registró una nueva cita para la siguiente fecha: " + horaCitaEmail;
+
+                    correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
+
+                   /* MimeMessage message = new MimeMessage();
+                    MailboxAddress from = new MailboxAddress("AuriculoterapiaApp","auriculoterapiaapp@gmail.com");
+                    message.From.Add(from);
+
+                    //MailboxAddress to = new MailboxAddress("User","pruebasmndrd@gmail.com");
+                    string emailUserTo = cita.Paciente.Usuario.Email;
+                    MailboxAddress to = new MailboxAddress("User",emailUserTo);
+                    message.To.Add(to);
+
+                    message.Subject = "Nueva Cita";
+
+                    BodyBuilder bodyBuilder = new BodyBuilder();
+                    //bodyBuilder.TextBody = "El especialista registro una nueva cita ";
+
+                    string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+                    string nombreEspecialistaEmail = disponibilidad.Especialista.Usuario.Nombre + " "+disponibilidad.Especialista.Usuario.Apellido;
+                    bodyBuilder.TextBody = "El especialista "+nombreEspecialistaEmail + " registró una nueva cita para la siguiente fecha:" + horaCitaEmail;
+                    message.Body = bodyBuilder.ToMessageBody();
+
+                    SmtpClient client = new SmtpClient();
+                    client.Connect("smtp.gmail.com",587,false);
+                    client.Authenticate("auriculoterapiaapp@gmail.com","TPAuriculoterapia123");
+
+                    client.Send(message);
+                    client.Disconnect(true);
+                    client.Dispose();*/
+
+                    
+
                 }catch(System.Exception){
 
                     throw;
@@ -97,6 +139,8 @@ namespace Auriculoterapia.Api.Service.Implementation
             var cita = new Cita();
             var conversor = new ConversorDeFechaYHora(); 
             var disponibilidad = new Disponibilidad();
+            var correo = new SendEmail();
+
             try {
 
                 var tipoAtencion = tipoAtencionRepository.FindByDescription(entity.TipoAtencion);
@@ -146,6 +190,21 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                 notificacionRepository.Save(notificacion);
 
+                var especialista = especialistaRepository.FindById(1);
+
+                string emailUserTo = especialista.Usuario.Email;
+                string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
+
+                string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+
+                string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+            
+                string textBody = "El paciente "+ nombrePaciente +" registró una cita para la siguiente fecha: " + horaCitaEmail;
+            
+                string subject = "NUeva Cita";
+
+                correo.sendEmailTo(nombreEspecialista,emailUserTo,subject,textBody);
+
             }catch(System.Exception){
 
                 throw;
@@ -162,7 +221,7 @@ namespace Auriculoterapia.Api.Service.Implementation
             var horaFinAnterior = new DateTime();
             var horaInicioActual = new DateTime();
             var horaFinActual = new DateTime();
-
+            var correo = new SendEmail();
             try{
                 cita = this.CitaRepository.FindById(id);
                 horaInicioAnterior = cita.HoraInicioAtencion;
@@ -219,6 +278,22 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                 notificacionRepository.Save(notificacion);
 
+                var especialista = especialistaRepository.FindById(1);
+
+                string emailUserTo = especialista.Usuario.Email;
+                string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
+
+                string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+
+                string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+            
+                string textBody = "El paciente "+ nombrePaciente +" modificó la cita para la siguiente fecha: " + horaCitaEmail;
+            
+                string subject = "Cita Modificada";
+
+                correo.sendEmailTo(nombreEspecialista,emailUserTo,subject,textBody);
+                
+
             } catch(System.Exception){
                 throw;
             }
@@ -247,6 +322,7 @@ namespace Auriculoterapia.Api.Service.Implementation
             var disponibilidad = new Disponibilidad();
             var horarioBorrado = false;
             var cita = new Cita();
+            var correo = new SendEmail();
             try{
                 if(estado.Equals("Cancelado")){
                     cita = this.CitaRepository.FindById(citaId);
@@ -256,15 +332,48 @@ namespace Auriculoterapia.Api.Service.Implementation
                     }
 
                     var notificacion = new Notificacion();
+
+                    string subject = "Cita Cancelada";
+
                     if(usuarioId == 1){
                         notificacion.EmisorId = usuarioId;
                         notificacion.ReceptorId = cita.Paciente.UsuarioId;
+
+                        //EMAIL
+                        string emailUserTo = cita.Paciente.Usuario.Email;
+                  
+                        string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+
+                        string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+                    
+                        string textBody = "El especialista Paul Alejos canceló la cita para la siguiente fecha: " + horaCitaEmail;
+
+                        correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
+
                     }else{
+                        var especialista = especialistaRepository.FindById(1);
                         notificacion.EmisorId = usuarioId;
                         notificacion.ReceptorId = 1;
+
+                        string emailUserTo = especialista.Usuario.Email;
+                        string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
+
+                        string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+
+                        string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+                    
+                        string textBody = "El paciente "+ nombrePaciente +" canceló la cita para la siguiente fecha: " + horaCitaEmail;
+                    
+                        correo.sendEmailTo(nombreEspecialista,emailUserTo,subject,textBody);
+
+                    
                     }
                     notificacion.TipoNotificacion = "CANCELARCITA";
                     notificacionRepository.Save(notificacion);
+
+                   
+
+                    
 
                 }
               
