@@ -99,7 +99,7 @@ namespace Auriculoterapia.Api.Service.Implementation
                     string textBody = "El especialista Samuel Chung registró una nueva cita para la siguiente fecha: " + horaCitaEmail;
 
                     correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
-
+                    //var valdicacionCorreo = correo.verificarEMail(emailUserTo);
                                        
 
                 }catch(System.Exception){

@@ -71,9 +71,21 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 
                 if(user == null && emailExsist == null){              
                    if( entity.Id >=0){
-                    context.Usuarios.Add(entity);
-                    context.SaveChanges();
-                    rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
+
+                        var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+                        var currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,myTimeZone);
+
+                        DateTime today = currentDateTime;
+                        var codigo = new Random().Next(10000,100000);
+
+                        entity.EmailExist = false;   
+                        entity.FechaEnvioCorreoConfirmacion = today;
+                        entity.Codigo = codigo.ToString();
+                        context.Usuarios.Add(entity);
+                        context.SaveChanges();
+                        rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
+                        var correo = new SendEmail();
+                        correo.sendEmailTo(entity.Nombre,entity.Email,"Codigo de confirmacion para Auriculoterapia",entity.Codigo);
                    }
                 }
               
@@ -261,6 +273,66 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }    
             return keyWord;
         }
+
+
+        public ResponseValidationEmail ValidateEmailCode(int idUser,string code){
+            var usuario = context.Usuarios.FirstOrDefault(x => x.Id == idUser);
+
+            ResponseValidationEmail validationEmail;
+
+            var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+            var currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,myTimeZone);
+
+            DateTime today = currentDateTime;
+            var envioCorreo = usuario.FechaEnvioCorreoConfirmacion;
+
+            var nuevaFecha = currentDateTime.Subtract(envioCorreo);
+
+            var todayDate = today.Date;
+            var envioCorreoDate = envioCorreo.Date;
+
+            var todayHour = today.Hour;
+            var envioCorreoHour = envioCorreo.Hour;
+
+            var minutos = (today - envioCorreo).TotalMinutes;
+
+            if(minutos < 60){
+                if(usuario.Codigo == code){
+                    usuario.EmailExist = true;
+                    usuario.FechaConfirmacionCodigo = today;
+                    context.SaveChanges();
+
+                    validationEmail = new ResponseValidationEmail(usuario.Id,envioCorreo,today,usuario.Codigo,usuario.EmailExist);
+                }else{
+                    validationEmail = new ResponseValidationEmail(-1,envioCorreo,today,usuario.Codigo,usuario.EmailExist);
+
+                }   
+            }else{
+                    validationEmail = new ResponseValidationEmail(-2,envioCorreo,today,usuario.Codigo,usuario.EmailExist);
+
+            }
+            
+            
+
+        
+            return validationEmail;
+            
+        }
+
+        public ResponseValidationEmail BuscarValidationEmailUser(int idUser, string nombreUsuario){
+            var usuario = context.Usuarios.FirstOrDefault(x => x.Id == idUser || x.NombreUsuario == nombreUsuario);
+            ResponseValidationEmail validationEmail;
+
+            if(usuario != null){
+                validationEmail = new ResponseValidationEmail(usuario.Id,null,null,usuario.Codigo,usuario.EmailExist);
+
+            }else{
+                validationEmail = new ResponseValidationEmail(-1,null,null,"codigo",false);
+            }
+
+            return validationEmail;
+        }
+
 
         public ResponseActualizarFoto Actualizar_Foto(int idUser,string foto){
             var usuario = context.Usuarios.Include(p => p.Paciente).

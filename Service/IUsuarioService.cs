@@ -17,6 +17,10 @@ namespace Auriculoterapia.Api.Service
         ResponseActualizarFoto Actualizar_Foto(int idUser,string foto);
    
         ResponseActualizarFoto Buscar_Foto(int idUser);
+
+        ResponseValidationEmail ValidateEmailCode(int idUser,string code);
+
+        ResponseValidationEmail BuscarValidationEmailUser(int idUser, string correo);
       
     }
 }
