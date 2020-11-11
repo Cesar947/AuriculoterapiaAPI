@@ -20,5 +20,6 @@ namespace Auriculoterapia.Api.Repository
        ResponseActualizarFoto Actualizar_Foto(int idUser,string foto);
     
         ResponseActualizarFoto Buscar_Foto(int idUser); 
+
     }
 }

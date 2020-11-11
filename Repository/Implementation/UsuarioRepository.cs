@@ -71,9 +71,10 @@ namespace Auriculoterapia.Api.Repository.Implementation
                 
                 if(user == null && emailExsist == null){              
                    if( entity.Id >=0){
-                    context.Usuarios.Add(entity);
-                    context.SaveChanges();
-                    rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
+
+                        context.Usuarios.Add(entity);
+                        context.SaveChanges();
+                        rol_UsuarioRepository.Asignar_Usuario_Rol(entity);
                    }
                 }
               
@@ -261,6 +262,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             }    
             return keyWord;
         }
+
 
         public ResponseActualizarFoto Actualizar_Foto(int idUser,string foto){
             var usuario = context.Usuarios.Include(p => p.Paciente).

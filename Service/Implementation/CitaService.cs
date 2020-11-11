@@ -90,17 +90,26 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                     notificacionRepository.Save(notificacion);
 
+                    var especialista = especialistaRepository.FindById(1);
+                    string emailUserTo2 = especialista.Usuario.Email;
+                    string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
+
+                    //Email Paciente
                     string emailUserTo = cita.Paciente.Usuario.Email;
                     string subject = "Nueva cita";
                     string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
 
                     string horaCitaEmail = cita.HoraInicioAtencion.ToString();
                     //string nombreEspecialistaEmail = disponibilidad.Especialista.Usuario.Nombre + " "+disponibilidad.Especialista.Usuario.Apellido;
-                    string textBody = "El especialista Samuel Chung registró una nueva cita para la siguiente fecha: " + horaCitaEmail;
+                    string textBody = "El especialista "+nombreEspecialista +" registró una nueva cita para la siguiente fecha: " + horaCitaEmail;
 
                     correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
+                    //var valdicacionCorreo = correo.verificarEMail(emailUserTo);
 
-                                       
+                    //Email Especialista
+                   
+                    string textBody2 = "Acabas de registrar una cita para el paciente: "+nombrePaciente+ " para la siguiente fecha: "+ horaCitaEmail;
+                    correo.sendEmailTo(nombreEspecialista,emailUserTo2,subject,textBody2);
 
                 }catch(System.Exception){
 
@@ -165,18 +174,20 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                 var especialista = especialistaRepository.FindById(1);
 
+                //Email Especialista
                 string emailUserTo = especialista.Usuario.Email;
                 string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
-
                 string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
-
                 string horaCitaEmail = cita.HoraInicioAtencion.ToString();
-            
                 string textBody = "El paciente "+ nombrePaciente +" registró una cita para la siguiente fecha: " + horaCitaEmail;
-            
-                string subject = "NUeva Cita";
+                string subject = "Nueva Cita";
 
                 correo.sendEmailTo(nombreEspecialista,emailUserTo,subject,textBody);
+
+                //Email Paciente
+                string emailUserTo2 = cita.Paciente.Usuario.Email;
+                string textBody2 = "Acabas de registrar una cita con el especialista "+nombreEspecialista+" para la siguiente fecha: "+horaCitaEmail;
+                correo.sendEmailTo(nombrePaciente,emailUserTo2,subject,textBody2);
 
             }catch(System.Exception){
 
@@ -251,20 +262,22 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                 notificacionRepository.Save(notificacion);
 
+                //Email especialista
                 var especialista = especialistaRepository.FindById(1);
-
                 string emailUserTo = especialista.Usuario.Email;
                 string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
-
                 string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
-
                 string horaCitaEmail = cita.HoraInicioAtencion.ToString();
-            
                 string textBody = "El paciente "+ nombrePaciente +" modificó la cita para la siguiente fecha: " + horaCitaEmail;
-            
                 string subject = "Cita Modificada";
 
                 correo.sendEmailTo(nombreEspecialista,emailUserTo,subject,textBody);
+
+                //Email Paciente
+                string emailUserTo2 = cita.Paciente.Usuario.Email;
+                string textBody2 = "Acabas de modificar la cita para la siguiente fecha: "+horaCitaEmail;
+
+                correo.sendEmailTo(nombrePaciente,emailUserTo2,subject,textBody2);
                 
 
             } catch(System.Exception){
@@ -306,38 +319,46 @@ namespace Auriculoterapia.Api.Service.Implementation
 
                     var notificacion = new Notificacion();
 
+                     //EMAIL Paciente
                     string subject = "Cita Cancelada";
+                    string emailUserTo = cita.Paciente.Usuario.Email;
+                    string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+                    string horaCitaEmail = cita.HoraInicioAtencion.ToString();
+                   
+
+                    //EMAIL ESPECIALISTA
+                    var especialista = especialistaRepository.FindById(1);
+                    string emailUserTo2 = especialista.Usuario.Email;
+                    string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
+                  
+
 
                     if(usuarioId == 1){
                         notificacion.EmisorId = usuarioId;
                         notificacion.ReceptorId = cita.Paciente.UsuarioId;
 
-                        //EMAIL
-                        string emailUserTo = cita.Paciente.Usuario.Email;
-                  
-                        string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
-
-                        string horaCitaEmail = cita.HoraInicioAtencion.ToString();
-                    
-                        string textBody = "El especialista Samuel Chung canceló la cita para la siguiente fecha: " + horaCitaEmail;
-
+                        //EMAIL Paciente
+                        string textBody = "El especialista "+nombreEspecialista+ " canceló la cita para la siguiente fecha: " + horaCitaEmail;
                         correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody);
 
+                        //EMAIL ESPECIALISTA
+                        string textBody2 = "Acabas de cancelar la cita con el paciente "+nombrePaciente+" para la siguiente fecha: "+ horaCitaEmail;
+                        correo.sendEmailTo(nombreEspecialista,emailUserTo2,subject,textBody2);
+
                     }else{
-                        var especialista = especialistaRepository.FindById(1);
                         notificacion.EmisorId = usuarioId;
                         notificacion.ReceptorId = 1;
 
-                        string emailUserTo = especialista.Usuario.Email;
-                        string nombreEspecialista = especialista.Usuario.Nombre + " "+ especialista.Usuario.Apellido;
-
-                        string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
-
-                        string horaCitaEmail = cita.HoraInicioAtencion.ToString();
-                    
+                        //EMAIL ESPECIALISTA
+                       
+                        //string nombrePaciente = cita.Paciente.Usuario.Nombre + " "+ cita.Paciente.Usuario.Apellido;
+                        //string horaCitaEmail = cita.HoraInicioAtencion.ToString();
                         string textBody = "El paciente "+ nombrePaciente +" canceló la cita para la siguiente fecha: " + horaCitaEmail;
-                    
-                        correo.sendEmailTo(nombreEspecialista,emailUserTo,subject,textBody);
+                        correo.sendEmailTo(nombreEspecialista,emailUserTo2,subject,textBody);
+
+                        //EMAIL PACIENTE
+                        string textBody2 = "Acabas de cancelar la cita con el especialista "+nombreEspecialista+ " para la siguiente fecha: "+horaCitaEmail;
+                        correo.sendEmailTo(nombrePaciente,emailUserTo,subject,textBody2);
 
                     
                     }

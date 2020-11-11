@@ -68,6 +68,7 @@ namespace Controllers
                        
         }
 
+
         [AllowAnonymous]
         [HttpGet("pacientesPorSexo")]
         public CantidadPacientesPorSexo retornarPacientesPorSexo(){

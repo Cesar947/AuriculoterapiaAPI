@@ -52,5 +52,7 @@ namespace Auriculoterapia.Api.Service.Implementation
             }
             return listaResponse;
         }
+
+
     }
 }

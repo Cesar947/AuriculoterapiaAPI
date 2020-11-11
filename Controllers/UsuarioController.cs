@@ -155,6 +155,7 @@ namespace Auriculoterapia.Api.Controllers
             }           
 
         }
+ 
         
     }
 }

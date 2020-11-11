@@ -31,5 +31,16 @@ namespace Auriculoterapia.Api.Helpers
             client.Dispose();
 
         }
+
+        public bool verificarEMail(string email){
+            SmtpClient client = new SmtpClient();
+
+            client.Connect("smtp.gmail.com",587,false);
+            client.Authenticate("auriculoterapiaapp@gmail.com","TPAuriculoterapia123");
+
+            MailboxAddress address = client.Verify("pruebasmndrd");
+            
+            return true;
+        }
     }
 }
