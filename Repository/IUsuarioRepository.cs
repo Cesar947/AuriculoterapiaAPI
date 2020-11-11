@@ -21,8 +21,5 @@ namespace Auriculoterapia.Api.Repository
     
         ResponseActualizarFoto Buscar_Foto(int idUser); 
 
-        ResponseValidationEmail ValidateEmailCode(int idUser,string code);
-
-        ResponseValidationEmail BuscarValidationEmailUser(int idUser, string correo);
     }
 }

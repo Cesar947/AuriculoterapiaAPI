@@ -17,5 +17,6 @@ namespace Auriculoterapia.Api.Service
         CantidadPacientePorEdad retornarPacientesPorEdad();
 
         List<ResponsePacientesObesidad> retornarCantidadPacientesPorEdadObesidad(string sexo);
+
     }
 }

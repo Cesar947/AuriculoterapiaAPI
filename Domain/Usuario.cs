@@ -27,13 +27,7 @@ namespace Auriculoterapia.Api.Domain
 
         public string Foto {get;set;}
 
-        public DateTime FechaEnvioCorreoConfirmacion {get;set;}
-
-        public DateTime FechaConfirmacionCodigo {get;set;}
-
-        public string Codigo {get; set;}
-
-        public bool EmailExist {get;set;}
+       
         
     }
 }

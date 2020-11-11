@@ -52,12 +52,5 @@ namespace Auriculoterapia.Api.Service.Implementation
             return UsuarioRepository.Buscar_Foto(idUser);
         }
         
-        public ResponseValidationEmail ValidateEmailCode(int idUser,string code){
-            return UsuarioRepository.ValidateEmailCode(idUser,code);
-        }
-
-        public ResponseValidationEmail BuscarValidationEmailUser(int idUser, string correo){
-            return UsuarioRepository.BuscarValidationEmailUser(idUser,correo);
-        }
     }   
 }

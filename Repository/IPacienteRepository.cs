@@ -24,5 +24,6 @@ namespace Auriculoterapia.Api.Repository
        CantidadPacientesPorNivel retornarPacientesPorNivel(string tratamiento);
 
        ResponsePacientesObesidad retornarCantidadPacientesPorEdadObesidad(int min, int max, string sexo, string tipoPacientePorEdad);
+
     }
 }

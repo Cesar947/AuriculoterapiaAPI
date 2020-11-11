@@ -67,7 +67,7 @@ namespace Auriculoterapia.Api.Repository.Implementation
             
         }
 
-        
+            
         public Paciente FindById(int Id){
             var paciente = new Paciente();
             try{

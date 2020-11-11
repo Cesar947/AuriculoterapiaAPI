@@ -155,37 +155,7 @@ namespace Auriculoterapia.Api.Controllers
             }           
 
         }
-
-
-        [AllowAnonymous]
-        [HttpPost("validarcodigo")]
-        public IActionResult ValidateEmailCode([FromBody] ResponseValidationEmail response)
-        {
-            var codigo = usuarioService.ValidateEmailCode(response.Id,response.Codigo);
-
-            if(codigo.Id == -1){
-                return BadRequest(new {message = "Codigo de verficacion equivocado"});
-            }else if(codigo.Id == -2){
-                return BadRequest(new {message = "Codigo de verificación expirado"});
-            }
-
-            return Ok(codigo);
-        }
-
-
-         [AllowAnonymous]
-         [HttpGet("validarcorreo/{id}/{nombreusuario}")]
-        public IActionResult BuscarValidationEmailUser(int id, string nombreusuario){
-           
-            var email = usuarioService.BuscarValidationEmailUser(id,nombreusuario);
-            
-           
-            if(email.Id == -1){
-                return BadRequest(new {message = "No se encontro el usuario"});
-            }
-
-            return Ok(email);
-        }
+ 
         
     }
 }
